@@ -9,11 +9,20 @@ import common.model.ModelHelper;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;
 import common.model.response.ResponseCodeEnum;
+import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Service
 public class ApiAdapterServiceImpl implements IApiAdapterService {
     @Override
-    public ApiResponse getApiResponse(ShardView shardView, BaseRequest baseRequest) {
-        return getApiResponseFactory(baseRequest);
+    public ApiResponse getApiResponse(ShardView shardView, BaseRequest baseRequest, HttpServletRequest request) {
+        try {
+            return getApiResponseFactory(baseRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ModelHelper.getApiResponseByResponseCodeEnum(ResponseCodeEnum.unknownException, e);
+        }
     }
 
     private ApiResponse getApiResponseFactory(BaseRequest baseRequest) {

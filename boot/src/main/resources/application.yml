@@ -1,1 +1,34 @@
+server:
+  port: 81
 
+spring:
+  mail:
+    host: smtp.qq.com
+    username: 1614923608@qq.com
+    password: uaepyyaeqryqhbai
+    defaultEncoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          auth: true
+          ssl:
+            trust: smtp.qq.com
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+          starttls:
+            enable: true
+            required: true
+
+# Web
+spring.thymeleaf.prefix: classpath:/web/
+#spring.thymeleaf
+# Allow Thymeleaf web to be reloaded at dev time
+spring.thymeleaf.cache: false
+
+logging.config: classpath:log4j2.xml
+mybatis.config-location: classpath:mybatis-config.xml
+mybatis.mapper-locations: classpath*:biz/service/dal/mapper/xml/original/*.xml, biz/service/dal/mapper/xml/extend/*.xml

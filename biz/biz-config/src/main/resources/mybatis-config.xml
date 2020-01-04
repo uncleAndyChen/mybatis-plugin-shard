@@ -14,14 +14,14 @@
         <setting name="defaultExecutorType" value="SIMPLE"/>
         <setting name="defaultStatementTimeout" value="25"/>
         <setting name="safeRowBoundsEnabled" value="false"/>
-        <setting name="localCacheScope" value="SESSION"/>
-        <setting name="jdbcTypeForNull" value="OTHER"/>
-        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
-        <setting name="logImpl" value="LOG4J2"/>
         <!-- 开启驼峰映射 ，为自定义的SQL语句服务-->
         <!-- 设置启用数据库字段下划线映射到java对象的驼峰式命名属性，默认为false-->
         <!-- 即从经典数据库列名 A_COLUMN 到经典Java 属性名 aColumn 的类似映射 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+        <setting name="logImpl" value="LOG4J2"/>
     </settings>
     <plugins>
         <plugin interceptor="common.dal.aspect.shard.ShardTableInterceptor">

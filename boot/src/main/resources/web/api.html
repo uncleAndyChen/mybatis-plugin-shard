@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Api 模拟测试</title>
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="/static/js/api.js" th:src="@{/js/api.js}+ '?v=202001042220'"></script>
+</head>
+<body>
+    <h3 align="center">api列表</h3>
+    <form id="formExamConfirmAddAttach" method="POST" enctype="multipart/form-data" action="">
+        <table width="80%" align="center">
+            <tr>
+                <td>
+                    <hr/>
+                    身份证号：<input type="text" id="idNumber" value="522128200811036001"/>
+                    <br/>
+                    <a href="javascript:apiPost('getEduStudentByIdNumber');">搜索</a><br/>
+                    <hr/>
+                    身份证号：<input type="text" id="idNumber2" value="522128200811036006"/><br/>
+                    电话：<input type="text" id="phone" value="1380013806"/><br/>
+                    <a href="javascript:apiPost('getEduStudentByIdNumberOrPhone');">搜索</a><br/>
+                    <hr/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    <table width="80%" align="center">
+        <tr>
+            <td>
+                <b>执行结果</b> <br/>
+                <textarea rows="10" cols="200" id="txtJsonResult"></textarea>
+            </td>
+        </tr>
+        <tr><td height="80"></td></tr>
+    </table>
+</body>
+</html>

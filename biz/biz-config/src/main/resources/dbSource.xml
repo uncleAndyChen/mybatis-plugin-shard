@@ -15,21 +15,20 @@
         </property>
     </bean>
 
-    <bean id="system-wall-config" class="com.alibaba.druid.wall.WallConfig">
+    <bean id="wall-config" class="com.alibaba.druid.wall.WallConfig">
         <property name="multiStatementAllow" value="true"/>
     </bean>
-    <bean id="system-wall-filter" class="com.alibaba.druid.wall.WallFilter">
-        <property name="config" ref="system-wall-config"/>
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="config" ref="wall-config"/>
     </bean>
-    <bean id="system-stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
         <property name="slowSqlMillis" value="10000"/>
         <property name="logSlowSql" value="true"/>
         <property name="mergeSql" value="true"/>
     </bean>
 
     <!-- system -->
-    <bean id="dataSourceSystem" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
-          destroy-method="close">
+    <bean id="dataSourceSystem" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.system.url}"/>
         <property name="username" value="${jdbc.system.username}"/>
@@ -47,15 +46,14 @@
         <property name="filters" value="log4j2"/>
         <property name="proxyFilters">
             <list>
-                <ref bean="system-stat-filter"/>
-                <ref bean="system-wall-filter"/>
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
             </list>
         </property>
     </bean>
 
     <!-- student -->
-    <bean id="dataSourceStudent" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
-          destroy-method="close">
+    <bean id="dataSourceStudent" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.student.url}"/>
         <property name="username" value="${jdbc.student.username}"/>
@@ -73,15 +71,14 @@
         <property name="filters" value="log4j2"/>
         <property name="proxyFilters">
             <list>
-                <ref bean="system-stat-filter"/>
-                <ref bean="system-wall-filter"/>
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
             </list>
         </property>
     </bean>
 
     <!-- finance -->
-    <bean id="dataSourceFinance" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
-          destroy-method="close">
+    <bean id="dataSourceFinance" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.finance.url}"/>
         <property name="username" value="${jdbc.finance.username}"/>
@@ -99,8 +96,8 @@
         <property name="filters" value="log4j2"/>
         <property name="proxyFilters">
             <list>
-                <ref bean="system-stat-filter"/>
-                <ref bean="system-wall-filter"/>
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
             </list>
         </property>
     </bean>

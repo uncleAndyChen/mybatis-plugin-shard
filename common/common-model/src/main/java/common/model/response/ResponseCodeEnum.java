@@ -6,6 +6,7 @@ package common.model.response;
 public enum ResponseCodeEnum {
     failed(0, "失败"),
     success(1, "成功"),
+    unknownException(-20, "系统异常"),
     noSuchMethodException(-30, "调用了不存在的方法，请联系管理员。"),
     ;
 
