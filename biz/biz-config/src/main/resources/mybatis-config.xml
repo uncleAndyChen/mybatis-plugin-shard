@@ -24,6 +24,17 @@
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <plugins>
-        <plugin interceptor="common.dal.aspect.shard.ShardTableInterceptor"></plugin>
+        <plugin interceptor="common.dal.aspect.shard.ShardTableInterceptor">
+            <!-- 测试期间用于打印分表分库的 sql 语句，默认为 false 即不打印 -->
+            <property name="isPrintShardSqlInfo" value="true"/>
+            <!-- 直接分表 -->
+            <property name="shardTablesByKeyDirectly" value=""/>
+            <!-- 主键除以 divideByValue 得到的值作为分表依据 -->
+            <property name="shardTablesByKeyDivideBy" value=""/>
+            <!-- 针对上面参数的除数 -->
+            <property name="divideByValue" value="10"/>
+            <!-- 默认数据源的 key -->
+            <property name="defaultSchemaKey" value="system"/>
+        </plugin>
     </plugins>
 </configuration>

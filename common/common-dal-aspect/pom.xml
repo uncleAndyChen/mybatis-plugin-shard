@@ -15,7 +15,6 @@
         <org.mybatis.spring.boot.version>2.1.1</org.mybatis.spring.boot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <lombok.version>1.18.10</lombok.version>
     </properties>
 
     <dependencies>
@@ -33,12 +32,6 @@
             <groupId>com.lovesofttech</groupId>
             <artifactId>common-lib</artifactId>
             <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

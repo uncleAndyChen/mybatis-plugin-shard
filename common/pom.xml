@@ -12,5 +12,6 @@
     <modules>
         <module>common-dal-aspect</module>
         <module>common-lib</module>
+        <module>common-model</module>
     </modules>
 </project>

@@ -40,6 +40,7 @@ public class ShardTableInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
+        System.out.println(properties);
     }
 
     private void doShardTable(MetaObject metaStatementHandler) {
