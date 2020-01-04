@@ -1,6 +1,6 @@
 package common.dal.aspect.source;
 
-import common.model.ShardView;
+import common.dal.aspect.shard.ShardView;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
