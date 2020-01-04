@@ -13,6 +13,6 @@
         <module>boot</module>
         <module>biz</module>
         <module>common</module>
-        <module>parent</module>
+        <module>dependencies</module>
     </modules>
 </project>

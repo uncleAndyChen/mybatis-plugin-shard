@@ -5,14 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lovesofttech</groupId>
-        <artifactId>mybatis-plugin-shard-dependencies</artifactId>
+        <artifactId>dependencies</artifactId>
         <version>1.0.0</version>
-        <relativePath>../../parent</relativePath>
+        <relativePath>../../dependencies</relativePath>
     </parent>
     <artifactId>biz-service-dal</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${springframework.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.lovesofttech</groupId>
             <artifactId>common-lib</artifactId>

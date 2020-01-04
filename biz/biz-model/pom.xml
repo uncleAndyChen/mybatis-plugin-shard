@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lovesofttech</groupId>
-        <artifactId>mybatis-plugin-shard-dependencies</artifactId>
+        <artifactId>dependencies</artifactId>
         <version>1.0.0</version>
-        <relativePath>../../parent</relativePath>
+        <relativePath>../../dependencies</relativePath>
     </parent>
     <artifactId>biz-model</artifactId>
     <version>1.0.0</version>
