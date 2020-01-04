@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="biz.service.dal.mapper.extend.EduStudentMapperExt">
-    <select id="getEduStudentListByIdNumberOrPhone" parameterType="mis.api.biz.model.request.StudentSearchRequest" resultType="mis.api.biz.model.response.StudentSearchResponse">
-        select id, stu_name, stu_unique_num, id_number, phone, address from edu_student
-        where id_number = #{idNumber,jdbcType=VARCHAR} or phone = #{phone,jdbcType=VARCHAR}
-    </select>
-
-    <select id="getEduStudentListByIdNumber" parameterType="java.lang.String" resultType="mis.api.biz.model.response.StudentSearchResponse">
+    <select id="getEduStudentListByIdNumber" parameterType="java.lang.String" resultType="biz.model.response.StudentSearchResponse">
         select id, stu_name, stu_unique_num, id_number, phone, address from edu_student
         where id_number = #{idNumber,jdbcType=VARCHAR}
     </select>
 
-    <select id="getAllActivityStudentSearchResponse" parameterType="java.lang.Integer" resultType="mis.api.biz.model.response.StudentSearchResponse">
+    <select id="getEduStudentListByIdNumberOrPhone" parameterType="biz.model.request.StudentSearchRequest" resultType="biz.model.response.StudentSearchResponse">
+        select id, stu_name, stu_unique_num, id_number, phone, address from edu_student
+        where id_number = #{idNumber,jdbcType=VARCHAR} or phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllActivityStudentSearchResponse" parameterType="java.lang.Integer" resultType="biz.model.response.StudentSearchResponse">
         select id, stu_name, stu_unique_num, id_number, phone, address from edu_student
         where status = #{status,jdbcType=INTEGER}
     </select>

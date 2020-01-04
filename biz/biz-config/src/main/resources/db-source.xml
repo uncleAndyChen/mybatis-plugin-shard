@@ -10,7 +10,7 @@
         <property name="locations">
             <list>
                 <value>classpath:jdbc.properties</value>
-                <value>classpath:dbShard.properties</value>
+                <value>classpath:db-shard.properties</value>
             </list>
         </property>
     </bean>

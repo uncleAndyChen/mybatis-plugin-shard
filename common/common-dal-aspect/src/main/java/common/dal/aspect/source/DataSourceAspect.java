@@ -15,7 +15,7 @@ public class DataSourceAspect {
 
     static {
         try {
-            dbShardProperties = PropertiesLoaderUtils.loadAllProperties("dbShard.properties");
+            dbShardProperties = PropertiesLoaderUtils.loadAllProperties("db-shard.properties");
             notDefaultDBSourceKeys = getValue("data.source.keys.not.default").split(",");
         } catch (IOException e) {
             e.printStackTrace();
