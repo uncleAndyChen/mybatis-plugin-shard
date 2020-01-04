@@ -205,6 +205,9 @@ create table edu_student_2 as select * from edu_student where id between 20 and 
 create table edu_student_3 as select * from edu_student where id > 39;
 delete from edu_student where id > 19;
 
+ALTER TABLE `shard_student`.`edu_student_2` ADD PRIMARY KEY (`id`);
+ALTER TABLE `shard_student`.`edu_student_3` ADD PRIMARY KEY (`id`);
+
 use shard_finance;
 drop table if exists fin_major_tuition_grade;
 

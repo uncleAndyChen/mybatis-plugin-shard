@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="Mysql" targetRuntime="mybatis.generator.enhance.IntrospectedTableEnhanceImpl" defaultModelType="flat">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/shard_finance?useSSL=false&amp;serverTimezone=GMT&amp;useUnivalue=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;nullCatalogMeansCurrent=true"
+                        userId="root"
+                        password="RoOtPaSs">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="biz.model.entity" targetProject="biz/biz-model/src/main/java/">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="biz.service.dal.mapper.xml.original" targetProject="biz/biz-service-dal/src/main/java/">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--生成Dao类存放位置
+        http://blog.csdn.net/qq_27376871/article/details/51360638
+        MyBatis3:
+        ANNOTATEDMAPPER: 基于注解的Mapper接口，不会有对应的XML映射文件
+        MIXEDMAPPER: XML和注解的混合形式，上面这种情况中的SqlProvider注解方法会被XML替代。
+        XMLMAPPER: 所有的方法都在XML中，接口调用依赖XML文件。会生成一个XXX.xml文件内有各种sql语句，是mapper的实现。
+        MyBatis3Simple:
+        ANNOTATEDMAPPER: 基于注解的Mapper接口，不会有对应的XML映射文件
+        XMLMAPPER: 所有的方法都在XML中，接口调用依赖XML文件。
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="biz.service.dal.mapper.original" targetProject="biz/biz-service-dal/src/main/java/">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--生成对应表及类名-->
+        <table tableName="fin_major_tuition_grade" domainObjectName="FinMajorTuitionGrade"><generatedKey identity="true" type="post" column="id" sqlStatement="Mysql"/></table>
+    </context>
+</generatorConfiguration>
+<!--
+执行生成，请查看 MBG.md
+-->

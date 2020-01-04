@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="biz.service.dal.mapper.original.EduStudentMapper">
+  <resultMap id="BaseResultMap" type="biz.model.entity.EduStudent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stu_unique_num" jdbcType="INTEGER" property="stuUniqueNum" />
+    <result column="stu_unique_num_str" jdbcType="VARCHAR" property="stuUniqueNumStr" />
+    <result column="stu_name" jdbcType="VARCHAR" property="stuName" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="parents_phone" jdbcType="VARCHAR" property="parentsPhone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="dormitory_type" jdbcType="INTEGER" property="dormitoryType" />
+    <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="major_id" jdbcType="INTEGER" property="majorId" />
+    <result column="register_type" jdbcType="INTEGER" property="registerType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="operate_ip" jdbcType="VARCHAR" property="operateIp" />
+    <result column="operator" jdbcType="INTEGER" property="operator" />
+    <result column="job_modified_at" jdbcType="TIMESTAMP" property="jobModifiedAt" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="modified_at" jdbcType="TIMESTAMP" property="modifiedAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, stu_unique_num, stu_unique_num_str, stu_name, sex, id_number, phone, parents_phone, 
+    address, dormitory_type, grade_id, major_id, register_type, status, remark, operate_ip, 
+    operator, job_modified_at, created_at, modified_at
+  </sql>
+  <select id="selectByExample" parameterType="biz.model.entity.EduStudentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `edu_student`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `edu_student`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `edu_student`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="biz.model.entity.EduStudentExample">
+    delete from `edu_student`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="biz.model.entity.EduStudent">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `edu_student` (stu_unique_num, stu_unique_num_str, stu_name, 
+      sex, id_number, phone, 
+      parents_phone, address, dormitory_type, 
+      grade_id, major_id, register_type, 
+      status, remark, operate_ip, 
+      operator, job_modified_at, created_at, 
+      modified_at)
+    values (#{stuUniqueNum,jdbcType=INTEGER}, #{stuUniqueNumStr,jdbcType=VARCHAR}, #{stuName,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=INTEGER}, #{idNumber,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{parentsPhone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{dormitoryType,jdbcType=INTEGER}, 
+      #{gradeId,jdbcType=INTEGER}, #{majorId,jdbcType=INTEGER}, #{registerType,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{operateIp,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=INTEGER}, #{jobModifiedAt,jdbcType=TIMESTAMP}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{modifiedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="biz.model.entity.EduStudent">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `edu_student`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuUniqueNum != null">
+        stu_unique_num,
+      </if>
+      <if test="stuUniqueNumStr != null">
+        stu_unique_num_str,
+      </if>
+      <if test="stuName != null">
+        stu_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="idNumber != null">
+        id_number,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="parentsPhone != null">
+        parents_phone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="dormitoryType != null">
+        dormitory_type,
+      </if>
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="majorId != null">
+        major_id,
+      </if>
+      <if test="registerType != null">
+        register_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="operateIp != null">
+        operate_ip,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="jobModifiedAt != null">
+        job_modified_at,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="modifiedAt != null">
+        modified_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuUniqueNum != null">
+        #{stuUniqueNum,jdbcType=INTEGER},
+      </if>
+      <if test="stuUniqueNumStr != null">
+        #{stuUniqueNumStr,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null">
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="idNumber != null">
+        #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsPhone != null">
+        #{parentsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dormitoryType != null">
+        #{dormitoryType,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="majorId != null">
+        #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="registerType != null">
+        #{registerType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateIp != null">
+        #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="jobModifiedAt != null">
+        #{jobModifiedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedAt != null">
+        #{modifiedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="biz.model.entity.EduStudentExample" resultType="java.lang.Long">
+    select count(*) from `edu_student`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `edu_student`
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuUniqueNum != null">
+        stu_unique_num = #{record.stuUniqueNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuUniqueNumStr != null">
+        stu_unique_num_str = #{record.stuUniqueNumStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuName != null">
+        stu_name = #{record.stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.idNumber != null">
+        id_number = #{record.idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentsPhone != null">
+        parents_phone = #{record.parentsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dormitoryType != null">
+        dormitory_type = #{record.dormitoryType,jdbcType=INTEGER},
+      </if>
+      <if test="record.gradeId != null">
+        grade_id = #{record.gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.majorId != null">
+        major_id = #{record.majorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.registerType != null">
+        register_type = #{record.registerType,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateIp != null">
+        operate_ip = #{record.operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null">
+        operator = #{record.operator,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobModifiedAt != null">
+        job_modified_at = #{record.jobModifiedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifiedAt != null">
+        modified_at = #{record.modifiedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `edu_student`
+    set id = #{record.id,jdbcType=INTEGER},
+      stu_unique_num = #{record.stuUniqueNum,jdbcType=INTEGER},
+      stu_unique_num_str = #{record.stuUniqueNumStr,jdbcType=VARCHAR},
+      stu_name = #{record.stuName,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      id_number = #{record.idNumber,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      parents_phone = #{record.parentsPhone,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      dormitory_type = #{record.dormitoryType,jdbcType=INTEGER},
+      grade_id = #{record.gradeId,jdbcType=INTEGER},
+      major_id = #{record.majorId,jdbcType=INTEGER},
+      register_type = #{record.registerType,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      operate_ip = #{record.operateIp,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=INTEGER},
+      job_modified_at = #{record.jobModifiedAt,jdbcType=TIMESTAMP},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      modified_at = #{record.modifiedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="biz.model.entity.EduStudent">
+    update `edu_student`
+    <set>
+      <if test="stuUniqueNum != null">
+        stu_unique_num = #{stuUniqueNum,jdbcType=INTEGER},
+      </if>
+      <if test="stuUniqueNumStr != null">
+        stu_unique_num_str = #{stuUniqueNumStr,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null">
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="idNumber != null">
+        id_number = #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsPhone != null">
+        parents_phone = #{parentsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dormitoryType != null">
+        dormitory_type = #{dormitoryType,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        grade_id = #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="majorId != null">
+        major_id = #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="registerType != null">
+        register_type = #{registerType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateIp != null">
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="jobModifiedAt != null">
+        job_modified_at = #{jobModifiedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedAt != null">
+        modified_at = #{modifiedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="biz.model.entity.EduStudent">
+    update `edu_student`
+    set stu_unique_num = #{stuUniqueNum,jdbcType=INTEGER},
+      stu_unique_num_str = #{stuUniqueNumStr,jdbcType=VARCHAR},
+      stu_name = #{stuName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      id_number = #{idNumber,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      parents_phone = #{parentsPhone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      dormitory_type = #{dormitoryType,jdbcType=INTEGER},
+      grade_id = #{gradeId,jdbcType=INTEGER},
+      major_id = #{majorId,jdbcType=INTEGER},
+      register_type = #{registerType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      operate_ip = #{operateIp,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=INTEGER},
+      job_modified_at = #{jobModifiedAt,jdbcType=TIMESTAMP},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      modified_at = #{modifiedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
