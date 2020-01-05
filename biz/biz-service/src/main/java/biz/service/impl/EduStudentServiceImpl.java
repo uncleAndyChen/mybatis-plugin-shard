@@ -3,7 +3,7 @@ package biz.service.impl;
 import biz.model.request.StudentSearchRequest;
 import biz.service.dal.EduStudentDalService;
 import biz.service.facade.IEduStudentService;
-import common.dal.aspect.source.TargetDataSource;
+import common.dal.shard.TargetDataSource;
 import common.lib.JsonHelper;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;

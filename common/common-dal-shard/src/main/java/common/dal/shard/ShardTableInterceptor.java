@@ -1,6 +1,6 @@
-package common.dal.aspect.shard;
+package common.dal.shard;
 
-import common.dal.aspect.source.HandleDataSource;
+import common.dal.aspect.HandleDataSource;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;

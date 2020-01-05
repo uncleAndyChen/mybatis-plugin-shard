@@ -1,6 +1,6 @@
 package biz.service.facade;
 
-import common.dal.aspect.source.TargetDataSource;
+import common.dal.shard.TargetDataSource;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;
 

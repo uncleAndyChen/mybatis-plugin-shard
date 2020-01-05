@@ -1,7 +1,8 @@
-package common.dal.aspect.source;
+package common.dal.aspect;
 
-import common.dal.aspect.shard.ShardRequest;
-import common.dal.aspect.shard.ShardView;
+import common.dal.shard.ShardRequest;
+import common.dal.shard.ShardView;
+import common.dal.shard.TargetDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -26,14 +27,14 @@ public class DataSourceAspect {
         if (dbShardProperties.size() == 0) {
             // 控制台输出中文可能会显示成乱码，所以异常信息也同时包含了英文
             throw new IllegalArgumentException("没有找到配置文件db-shard.properties，或该文件里没有配置项。" +
-                    "请在这个文件里添加配置项，同时把文件放到 classpath 下，比如 resources 目录。\n" +
-                    "配置信息请参照: https://github.com/uncleAndyChen/mybatis-plugin-shard \n" +
+                    "请在这个文件里添加配置项，需要把这个文件放到 classpath 下，比如 启动项目的 resources 目录。\n" +
+                    "更详细的说明，请参照: https://github.com/uncleAndyChen/mybatis-plugin-shard \n" +
                     "not find db-shard.properties file, or no item in this file. " +
                     "please put config item in this file, " +
                     "the item include: \n" +
                     "data.source.key.{db source key}(should be more then one),\n" +
                     "data.source.keys.all,\n" +
-                    "dal.includes.{db source key}(should be more then one)\n" +
+                    "biz.service.{db source key}(should be more then one)\n" +
                     "help: https://github.com/uncleAndyChen/mybatis-plugin-shard \n");
         }
     }
@@ -41,7 +42,7 @@ public class DataSourceAspect {
     /**
      * 1. 如果第一个参数是 ShardView 类型，并且指定了一个存在的数据源 key，则使用这个数据源
      * 2. 通过注解的方式指定了正确的数据源，则使用这个数据源
-     * 3. Mapper 如果配置在某一个数据源下，则使用这个数据源
+     * 3. biz.service 接口类如果配置在某一个数据源下，则使用这个数据源
      * 4. 以上三类都不符合，则使用默认数据源
      */
     public void before(JoinPoint point) throws Exception {
@@ -56,7 +57,7 @@ public class DataSourceAspect {
             return;
         }
 
-        setTargetDataSourceFromMappersConfig(classes);
+        setTargetDataSourceFromBizServiceInterfaceName(classes);
     }
 
     public void afterHandler() {
@@ -94,9 +95,9 @@ public class DataSourceAspect {
     }
 
     /**
-     * Mapper 如果配置在某一个数据源下，则使用这个数据源
+     * biz.service 接口类如果配置在某一个数据源下，则使用这个数据源
      */
-    private void setTargetDataSourceFromMappersConfig(Class<?>[] classes) {
+    private void setTargetDataSourceFromBizServiceInterfaceName(Class<?>[] classes) {
         for (String key : allSchemaKeys) {
             if (isDbSourceConfigContainsMapperClass(classes[0].getName(), key)) {
                 return;
@@ -105,7 +106,7 @@ public class DataSourceAspect {
     }
 
     /**
-     * 检查当前 Mapper 是否包含在给定的数据源配置里
+     * 检查当前 biz.service 接口类是否包含在给定的数据源配置里
      *
      * @param className   Mapper 类
      * @param dbSourceKey 数据源配置

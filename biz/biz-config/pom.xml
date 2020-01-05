@@ -25,14 +25,9 @@
         </dependency>
         <dependency>
             <groupId>com.lovesofttech</groupId>
-            <artifactId>common-dal-aspect</artifactId>
+            <artifactId>common-dal-shard</artifactId>
             <version>1.0.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.lovesofttech</groupId>-->
-<!--            <artifactId>biz-service-dal</artifactId>-->
-<!--            <version>1.0.0</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>

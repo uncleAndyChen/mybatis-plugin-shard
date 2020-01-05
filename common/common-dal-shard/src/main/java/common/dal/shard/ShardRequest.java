@@ -1,4 +1,4 @@
-package common.dal.aspect.shard;
+package common.dal.shard;
 
 public class ShardRequest {
     private ShardView shardView;
