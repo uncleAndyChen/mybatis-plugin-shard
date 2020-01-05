@@ -111,7 +111,7 @@ public class DataSourceAspect {
      * @param dbSourceKey 数据源配置
      */
     private boolean isDbSourceConfigContainsMapperClass(String className, String dbSourceKey) {
-        String includeKey = getValue("dal.includes." + dbSourceKey);
+        String includeKey = getValue("biz.service." + dbSourceKey);
 
         if (includeKey.length() == 0) {
             return false;
