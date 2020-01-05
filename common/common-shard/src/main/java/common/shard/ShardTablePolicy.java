@@ -1,6 +1,6 @@
-package common.dal.shard;
+package common.shard;
 
-import common.dal.aspect.HandleDataSource;
+import common.aspect.HandleDataSource;
 import common.lib.ConfigProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

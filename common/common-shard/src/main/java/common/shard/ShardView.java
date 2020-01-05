@@ -1,4 +1,4 @@
-package common.dal.shard;
+package common.shard;
 
 public class ShardView {
     /**

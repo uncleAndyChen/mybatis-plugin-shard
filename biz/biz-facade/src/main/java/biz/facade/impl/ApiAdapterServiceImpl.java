@@ -4,7 +4,7 @@ import biz.facade.facade.IApiAdapterService;
 import biz.service.facade.IEduStudentService;
 import biz.service.facade.IFinMajorTuitionGradeService;
 import biz.service.SysDeptService;
-import common.dal.shard.ShardView;
+import common.shard.ShardView;
 import common.model.ModelHelper;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;

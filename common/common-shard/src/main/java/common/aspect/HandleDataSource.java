@@ -1,6 +1,6 @@
-package common.dal.aspect;
+package common.aspect;
 
-import common.dal.shard.ShardView;
+import common.shard.ShardView;
 
 public class HandleDataSource {
     private static final ThreadLocal<String> schemaKey = new ThreadLocal<>();

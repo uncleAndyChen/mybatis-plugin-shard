@@ -1,4 +1,4 @@
-package common.dal.aspect;
+package common.aspect;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

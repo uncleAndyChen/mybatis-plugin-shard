@@ -24,7 +24,7 @@
         <setting name="logImpl" value="LOG4J2"/>
     </settings>
     <plugins>
-        <plugin interceptor="common.dal.shard.ShardTableInterceptor">
+        <plugin interceptor="common.shard.ShardTableInterceptor">
             <!-- 测试期间用于打印分表分库的 sql 语句，默认为 false 即不打印 -->
             <property name="isPrintShardSqlInfo" value="true"/>
             <!-- 直接分表 -->

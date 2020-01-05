@@ -1,8 +1,8 @@
-package common.dal.aspect;
+package common.aspect;
 
-import common.dal.shard.ShardRequest;
-import common.dal.shard.ShardView;
-import common.dal.shard.TargetDataSource;
+import common.shard.ShardRequest;
+import common.shard.ShardView;
+import common.shard.TargetDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.io.support.PropertiesLoaderUtils;

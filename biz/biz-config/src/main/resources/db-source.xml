@@ -102,7 +102,7 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="common.dal.aspect.ChooseDataSource" primary="true">
+    <bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="${data.source.key.system}" value-ref="dataSourceSystem"/>
@@ -113,7 +113,7 @@
         <property name="defaultTargetDataSource" ref="dataSourceSystem"/>
     </bean>
 
-    <bean id="dataSourceAspect" class="common.dal.aspect.DataSourceAspect"/>
+    <bean id="dataSourceAspect" class="common.aspect.DataSourceAspect"/>
     <aop:config proxy-target-class="true">
         <aop:aspect id="dataSourceAspect" ref="dataSourceAspect" order="1">
             <aop:pointcut id="point" expression="(execution(* biz.service.impl.*.*(..)))"/>

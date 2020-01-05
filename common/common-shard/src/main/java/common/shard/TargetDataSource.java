@@ -1,4 +1,4 @@
-package common.dal.shard;
+package common.shard;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
