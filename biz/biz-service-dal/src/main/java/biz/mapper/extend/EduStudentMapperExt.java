@@ -1,4 +1,4 @@
-package biz.service.dal.mapper.extend;
+package biz.mapper.extend;
 
 import biz.model.request.StudentSearchRequest;
 import biz.model.response.StudentSearchResponse;

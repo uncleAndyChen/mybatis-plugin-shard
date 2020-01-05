@@ -5,6 +5,10 @@ public class ShardView {
     private String shardKeyTable;
     private int shardKeyTableNumber;
 
+    public ShardView(String shardKeySchema) {
+        this.shardKeySchema = shardKeySchema;
+    }
+
     public ShardView() {
         this.shardKeySchema = "";
         this.shardKeyTable = "";

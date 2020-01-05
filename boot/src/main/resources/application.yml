@@ -31,4 +31,4 @@ spring.thymeleaf.cache: false
 
 logging.config: classpath:log4j2.xml
 mybatis.config-location: classpath:mybatis-config.xml
-mybatis.mapper-locations: classpath*:biz/service/dal/mapper/xml/original/*.xml, biz/service/dal/mapper/xml/extend/*.xml
+mybatis.mapper-locations: classpath*:biz/mapper/xml/original/*.xml, biz/mapper/xml/extend/*.xml

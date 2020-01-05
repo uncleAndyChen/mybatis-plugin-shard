@@ -1,7 +1,7 @@
 # 在项目根目录下执行
 ## 删除生成的所有文件
-del/f/s/q biz\biz-service-dal\src\main\java\biz\service\dal\mapper\original\*.*
-del/f/s/q biz\biz-service-dal\src\main\java\biz\service\dal\mapper\xml\original\*.*
+del/f/s/q biz\biz-service-dal\src\main\java\biz\mapper\original\*.*
+del/f/s/q biz\biz-service-dal\src\main\java\biz\mapper\xml\original\*.*
 del/f/s/q biz\biz-model\src\main\java\biz\model\entity\*.*
 
 ## 按不同配置文件，生成 entity 和 mapper

@@ -8,13 +8,16 @@ function apiPost(method) {
 
     switch (method) {
         case "getEduStudentByIdNumber":
-            baseRequest.idNumber = $("#idNumber").val();
-            parameter.idNumber = $("#idNumber2").val();
+            parameter.idNumber = $("#idNumber").val();
             baseRequest.jsonStringParameter = JSON.stringify(parameter);
             break;
         case "getEduStudentByIdNumberOrPhone":
             parameter.idNumber = $("#idNumber2").val();
             parameter.phone = $("#phone").val();
+            baseRequest.jsonStringParameter = JSON.stringify(parameter);
+            break;
+        case "getFinMajorTuitionGradeByPrimaryKey":
+            parameter.id = $("#majorTuitionGradeId").val();
             baseRequest.jsonStringParameter = JSON.stringify(parameter);
             break;
     }

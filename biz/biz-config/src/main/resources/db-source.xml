@@ -116,9 +116,7 @@
     <bean id="dataSourceAspect" class="common.dal.aspect.source.DataSourceAspect"/>
     <aop:config proxy-target-class="true">
         <aop:aspect id="dataSourceAspect" ref="dataSourceAspect" order="1">
-            <aop:pointcut id="tx" expression="(
-            execution(* biz.facade.*.*(..))
-            )"/>
+            <aop:pointcut id="tx" expression="(execution(* biz.service.impl.*.*(..)))"/>
             <aop:before pointcut-ref="tx" method="before"/>
             <aop:after pointcut-ref="tx" method="afterHandler"/>
         </aop:aspect>

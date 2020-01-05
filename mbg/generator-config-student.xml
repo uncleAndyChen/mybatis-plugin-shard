@@ -24,7 +24,7 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <!--生成映射文件存放位置-->
-        <sqlMapGenerator targetPackage="biz.service.dal.mapper.xml.original" targetProject="biz/biz-service-dal/src/main/java/">
+        <sqlMapGenerator targetPackage="biz.mapper.xml.original" targetProject="biz/biz-service-dal/src/main/java/">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!--生成Dao类存放位置
@@ -37,7 +37,7 @@
         ANNOTATEDMAPPER: 基于注解的Mapper接口，不会有对应的XML映射文件
         XMLMAPPER: 所有的方法都在XML中，接口调用依赖XML文件。
         -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="biz.service.dal.mapper.original" targetProject="biz/biz-service-dal/src/main/java/">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="biz.mapper.original" targetProject="biz/biz-service-dal/src/main/java/">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 

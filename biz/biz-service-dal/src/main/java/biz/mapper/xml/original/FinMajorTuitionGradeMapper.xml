@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="biz.service.dal.mapper.original.FinMajorTuitionGradeMapper">
+<mapper namespace="biz.mapper.original.FinMajorTuitionGradeMapper">
   <resultMap id="BaseResultMap" type="biz.model.entity.FinMajorTuitionGrade">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="major_id" jdbcType="INTEGER" property="majorId" />

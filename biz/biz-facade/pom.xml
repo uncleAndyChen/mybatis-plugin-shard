@@ -20,11 +20,6 @@
         </dependency>
         <dependency>
             <groupId>com.lovesofttech</groupId>
-            <artifactId>common-dal-aspect</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lovesofttech</groupId>
             <artifactId>biz-model</artifactId>
             <version>1.0.0</version>
         </dependency>

@@ -1,4 +1,4 @@
-package biz.service.dal.mapper.original;
+package biz.mapper.original;
 
 import biz.model.entity.FinMajorTuitionGrade;
 import biz.model.entity.FinMajorTuitionGradeExample;

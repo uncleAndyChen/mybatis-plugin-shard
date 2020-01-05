@@ -15,15 +15,22 @@
                     <hr/>
                     身份证号：<input type="text" id="idNumber" value="522128200811036001"/>
                     <br/>
-                    <a href="javascript:apiPost('getEduStudentByIdNumber');">getEduStudentByIdNumber</a><br/>
+                    <a href="javascript:apiPost('getEduStudentByIdNumber');">搜索学生，通过身份证号搜索</a><br/>
                     <hr/>
                     身份证号：<input type="text" id="idNumber2" value="522128200811036006"/><br/>
                     电话：<input type="text" id="phone" value="1380013806"/><br/>
-                    <a href="javascript:apiPost('getEduStudentByIdNumberOrPhone');">getEduStudentByIdNumberOrPhone</a><br/>
+                    <a href="javascript:apiPost('getEduStudentByIdNumberOrPhone');">搜索学生，通过身份证号或电话搜索</a><br/>
                     <hr/>
-                    <a href="javascript:apiPost('getAllActivityStudent');">getAllActivityStudent</a><br/>
+                    <a href="javascript:apiPost('getAllActivityStudent');">搜索学生，返回学生原生表的所有信息</a><br/>
                     <hr/>
-                    <a href="javascript:apiPost('getAllActivityStudentSearchResponse');">getAllActivityStudentSearchResponse</a><br/>
+                    <a href="javascript:apiPost('getAllActivityStudentSearchResponse');">搜索学生，返回自定义视图</a><br/>
+                    <hr/>
+                    <a href="javascript:apiPost('getFinMajorTuitionGradeList');">搜索年级所有专业学费标准</a><br/>
+                    <hr/>
+                    年级专业学费标准主键Id：<input type="text" id="majorTuitionGradeId" value="3"/><br/>
+                    <a href="javascript:apiPost('getFinMajorTuitionGradeByPrimaryKey');">根据主键搜索年级专业学费标准</a><br/>
+                    <hr/>
+                    <a href="javascript:apiPost('getSysDeptList');">搜索部门信息</a><br/>
                     <hr/>
                 </td>
             </tr>

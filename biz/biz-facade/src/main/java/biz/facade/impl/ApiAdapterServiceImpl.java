@@ -1,22 +1,28 @@
-package biz.impl;
+package biz.facade.impl;
 
-import biz.facade.IApiAdapterService;
-import biz.service.EduStudentService;
-import biz.service.FinMajorTuitionGradeService;
+import biz.facade.facade.IApiAdapterService;
+import biz.service.facade.IEduStudentService;
+import biz.service.facade.IFinMajorTuitionGradeService;
 import biz.service.SysDeptService;
 import common.dal.aspect.shard.ShardView;
 import common.model.ModelHelper;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;
 import common.model.response.ResponseCodeEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class ApiAdapterServiceImpl implements IApiAdapterService {
+    @Autowired
+    IFinMajorTuitionGradeService finMajorTuitionGradeService;
+    @Autowired
+    IEduStudentService eduStudentService;
+
     @Override
-    public ApiResponse getApiResponse(ShardView shardView, BaseRequest baseRequest, HttpServletRequest request) {
+    public ApiResponse getApiResponse(BaseRequest baseRequest, HttpServletRequest request) {
         try {
             return getApiResponseFactory(baseRequest);
         } catch (Exception e) {
@@ -31,16 +37,25 @@ public class ApiAdapterServiceImpl implements IApiAdapterService {
         }
 
         switch (baseRequest.getMethod()) {
-            case "getEduStudentByIdNumber":
-                return EduStudentService.getEduStudentByIdNumber(baseRequest);
-            case "getEduStudentByIdNumberOrPhone":
-                return EduStudentService.getEduStudentByIdNumberOrPhone(baseRequest);
             case "getAllActivityStudentSearchResponse":
-                return EduStudentService.getAllActivityStudentSearchResponse();
             case "getAllActivityStudent":
-                return EduStudentService.getAllActivityStudent();
+                baseRequest.setShardView(new ShardView("student"));
+                break;
+        }
+
+        switch (baseRequest.getMethod()) {
+            case "getEduStudentByIdNumber":
+                return eduStudentService.getEduStudentByIdNumber(baseRequest);
+            case "getEduStudentByIdNumberOrPhone":
+                return eduStudentService.getEduStudentByIdNumberOrPhone(baseRequest);
+            case "getAllActivityStudentSearchResponse":
+                return eduStudentService.getAllActivityStudentSearchResponse(baseRequest);
+            case "getAllActivityStudent":
+                return eduStudentService.getAllActivityStudent(baseRequest);
             case "getFinMajorTuitionGradeList":
-                return FinMajorTuitionGradeService.getFinMajorTuitionGradeList();
+                return finMajorTuitionGradeService.getFinMajorTuitionGradeList();
+            case "getFinMajorTuitionGradeByPrimaryKey":
+                return finMajorTuitionGradeService.getFinMajorTuitionGradeByPrimaryKey(baseRequest);
             case "getSysDeptList":
                 return SysDeptService.getSysDeptList();
             default:

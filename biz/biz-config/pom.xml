@@ -28,11 +28,11 @@
             <artifactId>common-dal-aspect</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.lovesofttech</groupId>
-            <artifactId>biz-facade</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.lovesofttech</groupId>-->
+<!--            <artifactId>biz-service-dal</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

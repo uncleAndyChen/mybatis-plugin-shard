@@ -5,8 +5,8 @@ import biz.model.entity.EduStudent;
 import biz.model.entity.EduStudentExample;
 import biz.model.request.StudentSearchRequest;
 import biz.model.response.StudentSearchResponse;
-import biz.service.dal.mapper.extend.EduStudentMapperExt;
-import biz.service.dal.mapper.original.EduStudentMapper;
+import biz.mapper.extend.EduStudentMapperExt;
+import biz.mapper.original.EduStudentMapper;
 import common.lib.application.BeanTools;
 
 import java.util.List;

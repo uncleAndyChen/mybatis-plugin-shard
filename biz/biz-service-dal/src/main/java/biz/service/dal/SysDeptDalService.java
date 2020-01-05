@@ -3,7 +3,7 @@ package biz.service.dal;
 import biz.enumeration.StatusEnum;
 import biz.model.entity.SysDept;
 import biz.model.entity.SysDeptExample;
-import biz.service.dal.mapper.original.SysDeptMapper;
+import biz.mapper.original.SysDeptMapper;
 import common.lib.application.BeanTools;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package biz.service.dal.mapper.original;
+package biz.mapper.original;
 
 import biz.model.entity.SysDept;
 import biz.model.entity.SysDeptExample;

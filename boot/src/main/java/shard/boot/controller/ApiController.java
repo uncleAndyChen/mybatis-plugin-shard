@@ -1,11 +1,9 @@
 package shard.boot.controller;
 
-import biz.facade.IApiAdapterService;
-import common.dal.aspect.shard.ShardView;
+import biz.facade.facade.IApiAdapterService;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +20,6 @@ public class ApiController {
             baseRequest = new BaseRequest(request.getRequestURI());
         }
 
-        ShardView shardView = new ShardView();
-        shardView.setShardKeySchema("student");
-        ApiResponse apiResponse = apiAdapterService.getApiResponse(shardView, baseRequest, request);
-
-        return apiResponse;
+        return apiAdapterService.getApiResponse(baseRequest, request);
     }
 }
