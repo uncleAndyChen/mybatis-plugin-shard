@@ -36,7 +36,7 @@
 ![](./docs/api-test.png)
 
 # 重新生成 mapper 和 entity
-请参考 [./docs/README.md](./docs/README.md)
+请参考 [docs/README.md](./docs/README.md)
 
 # todo
 - [ ] 完善分表逻辑

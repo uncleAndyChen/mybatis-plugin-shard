@@ -1,1 +1,2 @@
-具体执行方法，请参考 /docs/MBG.md
+# 重新生成 mapper 和 entity
+请参考 [docs/README.md](../docs/README.md)
