@@ -5,8 +5,8 @@
 - 本项目有完整的测试示例。
 
 # 项目地址
-- github:https://github.com/uncleAndyChen/mybatis-plugin-shard
-- gitee:https://gitee.com/uncleAndyChen/mybatis-plugin-shard
+- github: https://github.com/uncleAndyChen/mybatis-plugin-shard
+- gitee:  https://gitee.com/uncleAndyChen/mybatis-plugin-shard
 
 # 功能详述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
