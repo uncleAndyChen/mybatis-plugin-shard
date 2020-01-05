@@ -40,6 +40,8 @@ public class ShardTablePolicy {
         String convertedSql = originalSql;
         String convertedTableName;
 
+        // 针对直接添加后缀的表
+        // 基于编号分表的策略优先
         if (shardView.getShardKeyTableNumber() > 0) {
             for (String tableName : shardTableByKeyDirectlyList) {
                 convertedTableName = "`" + tableName + "_" + shardView.getShardKeyTableNumber() + "`";
@@ -52,6 +54,7 @@ public class ShardTablePolicy {
             }
         }
 
+        // 针对需要除一个数得到后缀的表
         if (shardView.getShardKeyTableNumber() > 0 && divideByValue > 1) {
             for (String tableName : shardTableByKeyDivideByList) {
                 convertedTableName = "`" + tableName + "_" + getByKeyDivideBy(shardView.getShardKeyTableNumber()) + "`";
