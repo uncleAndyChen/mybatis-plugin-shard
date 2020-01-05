@@ -27,6 +27,14 @@
 
 如果以上三种方式都没有找到数据源，则使用默认的数据源。
 
+# 运行
+- git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git
+- MySQL 数据库，导入 docs/schemas.sql。
+- 修改 biz/biz-config/src/main/resources/jdbc.properties 中连接数据库的参数。
+- 启动
+- 访问：http://localhost:81/api，可以测试各种情况下的数据访问。
+![](./docs/api-test.png)
+
 # todo
 - [ ] 完善分表逻辑
 - [ ] 将分表需要的参数添加到插件属性而不是配置文件
