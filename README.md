@@ -1,5 +1,6 @@
 # mybatis-plugin-shard
-- 基于spring 切面（AOP）实现动态多数据源切换；基于 MyBatis 插件方式实现动态分表查询。
+- 基于spring 切面（AOP）实现动态多数据源切换。
+- 基于 MyBatis 插件方式实现动态分表查询。
 - 来源于多个已上线项目实践。
 - 本项目有完整的测试示例。
 
