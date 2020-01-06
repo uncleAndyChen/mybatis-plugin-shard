@@ -17,11 +17,12 @@
 
 # 技术清单
 - JDK 1.8，理论上支持 1.8 以上的版本，如需升级，比如要改为 JDK 11，将文件 `./dependencies/pom.xml` 中 `<java.version>1.8</java.version>` 改为 `<java.version>11</java.version>`
-- MySQL 5.7，用这个版本作的测试，理论上支持 5.7 及以上版本。
+- MySQL 5.6.46、MySQL 5.7，用这两个版本作的测试，理论上支持 5.6 及以上版本。
 
-## maven 依赖库
+- maven 依赖库
 maven 依赖版本在 `./dependencies/pom.xml` 维护，如果要升级某一框架的版本，只需要修改这个文件就行，这个文件被作为其它 module 的 parent 依赖项。
-以下依赖为当前（2020-01-06）最新版本
+
+以下依赖为当前（2020-01-06）最新版本。
 - Spring Boot 2.2.2.RELEASE
 - Spring Framework 5.2.2.RELEASE （common-shard 模块直接依赖了 spring framework 下的 spring-aspects）
 - MyBatis 3.5.3
