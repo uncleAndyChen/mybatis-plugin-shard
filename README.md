@@ -31,8 +31,7 @@
 
 # 运行
 - `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
-- 因为依赖统一管理，添加了一个父模块：dependencies，只有一个 pom.xml 文件，需要先把这个 model 安装到本地仓库，否则会去 maven 配置的仓库下载。
-- dependencies 安装到本地仓库，打开 cmd 窗口，在项目根目录下操作：
+- 因为依赖统一管理，添加了一个父模块：dependencies，只有一个 pom.xml 文件，需要先把这个 model 安装到本地仓库，否则会去 maven 配置的仓库下载。打开 cmd 窗口，在项目根目录下操作：
 ```
 cd dependencies
 mvn clean
