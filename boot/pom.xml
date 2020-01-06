@@ -8,10 +8,23 @@
         <version>1.0.0</version>
         <relativePath>../../dependencies</relativePath>
     </parent>
-    <artifactId>boot</artifactId>
+    <artifactId>shard-boot</artifactId>
     <version>1.0</version>
-    <name>mybatis-plugin-shard</name>
+    <name>shard-boot</name>
     <description>mybatis-plugin-shard</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springframework.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -111,7 +124,6 @@
             <artifactId>biz-config</artifactId>
             <version>1.0.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

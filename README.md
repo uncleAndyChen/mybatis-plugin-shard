@@ -4,6 +4,8 @@
 - 来源于多个已上线项目实践。
 - 本项目有完整的测试示例。
 
+以后会出详细的文档，敬请期待。
+
 # 项目地址
 - github: https://github.com/uncleAndyChen/mybatis-plugin-shard
 - gitee:  https://gitee.com/uncleAndyChen/mybatis-plugin-shard
@@ -29,10 +31,30 @@
 
 # 运行
 - `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
+- 因为依赖统一管理，添加了一个父模块：dependencies，只有一个 pom.xml 文件，需要先把这个 model 安装到本地仓库，否则会去 maven 配置的仓库下载。
+- dependencies 安装到本地仓库，打开 cmd 窗口，在项目根目录下操作：
+```
+cd dependencies
+mvn clean
+mvn compile
+mvn install
+```
+- 强烈建议：maven 远程仓库添加阿里云镜像。
+    - 修改 maven 根目录下 `config/settings.xml`，在 `<mirrors>` 下添加：
+```
+<mirror> 
+    <id>alimaven</id> 
+    <name>aliyun maven</name> 
+    <url>https://maven.aliyun.com/repository/jcenter</url> 
+    <mirrorOf>central</mirrorOf> 
+</mirror>
+```
+- 用你喜欢的 IDE 导入项目，如果你要我推荐一款 IDE，那么我强烈推荐 IntelliJ IDEA，官网：http://www.jetbrains.com/
+- IDE 安装 Lombok 插件。
 - MySQL 数据库，导入 `docs/schemas.sql`
 - 修改 `biz/biz-config/src/main/resources/jdbc.properties` 中连接数据库的参数
 - 启动
-- 访问：`http://localhost:81/api`，可以测试以三种不同方式切换数据源，具体细节请看源代码，以后会出详细的文档。
+- 访问：`http://localhost:81/api`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
 ![](./docs/api-test.png)
 
 # 重新生成 mapper 和 entity
