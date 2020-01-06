@@ -15,19 +15,6 @@
 - github: https://github.com/uncleAndyChen/mybatis-plugin-shard
 - gitee:  https://gitee.com/uncleAndyChen/mybatis-plugin-shard
 
-# 技术清单
-- JDK 1.8，理论上支持 1.8 以上的版本，如需升级，比如要改为 JDK 11，将文件 `./dependencies/pom.xml` 中 `<java.version>1.8</java.version>` 改为 `<java.version>11</java.version>`
-- MySQL 5.6.46、MySQL 5.7，用这两个版本作的测试，理论上支持 5.6 及以上版本。
-- maven 依赖库
-    - maven 依赖版本在 `./dependencies/pom.xml` 维护，如果要升级某一框架的版本，只需要修改这个文件就行，模块 dependencies 被作为其它模块的 parent，目的就是统一管理版本，同样的依赖库只定义一次版本号。
-    - 以下依赖为当前（2020-01-06）最新版本
-        - Spring Boot 2.2.2.RELEASE
-        - Spring Framework 5.2.2.RELEASE （common-shard 模块直接依赖了 spring framework 下的 spring-aspects）
-        - MyBatis 3.5.3
-        - druid 1.1.21
-        - lombok 1.18.10
-        - jackson 2.10.1
-
 # 功能详述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
 - 分表：对于同一数据源或不同数据源下的，相同表结构的表，通过简单配置，实现分表查询功能。
@@ -100,3 +87,16 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
 </build>
 ```
 > directory 配置到 xml 的父目录 `src/main/java/biz/mapper/xml` 不会生效，配置成 `src/main/java` 就好。
+
+# 技术清单
+- JDK 1.8，理论上支持 1.8 以上的版本，如需升级，比如要改为 JDK 11，将文件 `./dependencies/pom.xml` 中 `<java.version>1.8</java.version>` 改为 `<java.version>11</java.version>`
+- MySQL 5.6.46、MySQL 5.7，用这两个版本作的测试，理论上支持 5.6 及以上版本。
+- maven 依赖库
+    - maven 依赖版本在 `./dependencies/pom.xml` 维护，如果要升级某一框架的版本，只需要修改这个文件就行，模块 dependencies 被作为其它模块的 parent，目的就是统一管理版本，同样的依赖库只定义一次版本号。
+    - 以下依赖为当前（2020-01-06）最新版本
+        - Spring Boot 2.2.2.RELEASE
+        - Spring Framework 5.2.2.RELEASE （common-shard 模块直接依赖了 spring framework 下的 spring-aspects）
+        - MyBatis 3.5.3
+        - druid 1.1.21
+        - lombok 1.18.10
+        - jackson 2.10.1
