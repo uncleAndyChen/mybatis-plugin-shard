@@ -35,11 +35,20 @@ public class ApiAdapterServiceImpl implements IApiAdapterService {
         if (baseRequest.getMethod() == null) {
             return ModelHelper.getApiResponseByResponseCodeEnum(ResponseCodeEnum.noSuchMethodException);
         }
+        ShardView shardView;
 
         switch (baseRequest.getMethod()) {
+            // 分表，后缀为 2
             case "getAllActivityStudentSearchResponse":
+                shardView = new ShardView("student");
+                shardView.setShardKeyTableNumber(2);
+                baseRequest.setShardView(shardView);
+                break;
+            // 分表，后缀为 3
             case "getAllActivityStudent":
-                baseRequest.setShardView(new ShardView("student"));
+                shardView = new ShardView("student");
+                shardView.setShardKeyTableNumber(3);
+                baseRequest.setShardView(shardView);
                 break;
         }
 

@@ -1,9 +1,11 @@
 drop schema if exists shard_system;
 drop schema if exists shard_student;
 drop schema if exists shard_finance;
+drop schema if exists shard_biz;
 create schema shard_system default character set utf8mb4;
 create schema shard_student default character set utf8mb4;
 create schema shard_finance default character set utf8mb4;
+create schema shard_biz default character set utf8mb4;
 
 use shard_system;
 set names utf8mb4;
@@ -201,7 +203,7 @@ update edu_student set id_number=CONCAT('5221282008110360', id) where id < 100;
 update edu_student set id_number=CONCAT('522128200811036', id) where id > 99;
 update edu_student set id_number=CONCAT('52212820081103600', id) where id < 10;
 
-create table edu_student_2 as select * from edu_student where id between 20 and 39;
+create table edu_student_2 as select * from edu_studen where id between 20 and 39;
 create table edu_student_3 as select * from edu_student where id > 39;
 delete from edu_student where id > 19;
 
@@ -240,4 +242,82 @@ INSERT INTO fin_major_tuition_grade (major_id, pay_year, tuition) VALUES
 ,(6, 2020, 21000)
 ,(7, 2020, 22000)
 ,(8, 2020, 23000)
+;
+
+use shard_biz;
+drop table if exists biz_trade;
+drop table if exists biz_trade_1;
+drop table if exists biz_trade_2;
+drop table if exists biz_trade_3;
+
+CREATE TABLE biz_trade (
+  id bigint(20) NOT NULL AUTO_INCREMENT COMMENT '交易自动编号',
+  biz_id int(11) NOT NULL COMMENT '商户ID',
+  tid bigint(20) NOT NULL COMMENT '淘宝/天猫系统的交易ID',
+  buyer_nick varchar(25) DEFAULT NULL COMMENT '买家帐号',
+  payment decimal(9,2) DEFAULT '0.00' COMMENT '实付金额',
+  status tinyint(4) DEFAULT '0' COMMENT '交易状态',
+  pay_time int(11) DEFAULT NULL COMMENT '付款时间，为时间戳',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易表';
+
+create table biz_trade_1 like biz_trade;
+create table biz_trade_2 like biz_trade;
+create table biz_trade_3 like biz_trade;
+
+INSERT INTO `biz_trade_1` (`id`, `biz_id`, `tid`, `buyer_nick`, `payment`, `status`, `pay_time`) VALUES
+ ('1', '1', '1019436109', 'buyer-1', '158.00', '7', '1390577684')
+,('2', '1', '1032653658', 'buyer-2', '129.00', '7', '1391227779')
+,('3', '1', '1041238338', 'buyer-3', '139.00', '4', '1391747632')
+,('4', '1', '1041259380', 'buyer-4', '298.00', '4', '1391748820')
+,('5', '1', '1041239998', 'buyer-5', '258.00', '4', '1391747876')
+,('6', '1', '1031008362', 'buyer-6', '158.00', '7', '1391062686')
+,('7', '1', '1033756594', 'buyer-7', '218.00', '7', '1391315797')
+,('8', '1', '1038968304', 'buyer-8', '168.00', '4', '1391654539')
+,('9', '1', '1008972908', 'buyer-9', '168.00', '7', '1390310913')
+,('10', '1', '1035517690', 'buyer-10', '158.00', '7', '1391428680')
+,('11', '31', '1033567064', 'buyer-11', '288.00', '7', '1391306903')
+,('12', '31', '1041656938', 'buyer-12', '139.00', '4', '1391758234')
+,('13', '31', '1041686610', 'buyer-13', '158.00', '4', '1391759129')
+,('14', '31', '995912752', 'buyer-14', '158.00', '7', '1389997268')
+,('15', '31', '1041738062', 'buyer-15', '158.00', '4', '1391760308')
+,('16', '31', '1041739606', 'buyer-16', '198.00', '4', '1391760344')
+,('17', '31', '1031353728', 'buyer-17', '139.00', '7', '1391092198')
+,('18', '31', '1041803618', 'buyer-18', '198.00', '4', '1391761893')
+,('19', '31', '1032828229', 'buyer-19', '139.00', '7', '1391237830')
+,('20', '31', '1041889837', 'buyer-20', '158.00', '4', '1391763240')
+,('14401', '10681', '10065721775', 'buyer-14401', '30.00', '4', '1442015863')
+,('14402', '10681', '10066194705', 'buyer-14402', '401.00', '4', '1442019129')
+,('14403', '10681', '10062518318', 'buyer-14403', '84.00', '4', '1441955071')
+,('14404', '10681', '10066338313', 'buyer-14404', '95.00', '4', '1442021279')
+,('14405', '10681', '10067249106', 'buyer-14405', '86.00', '4', '1442030880')
+,('14406', '10681', '10064942502', 'buyer-14406', '65.00', '4', '1441983043')
+,('14407', '10681', '10069402492', 'buyer-14407', '90.00', '4', '1442054202')
+,('14408', '10681', '10069563625', 'buyer-14408', '33.00', '4', '1442058516')
+,('14409', '10681', '10069953896', 'buyer-14409', '95.00', '4', '1442061423')
+,('14410', '10681', '10069954613', 'buyer-14410', '50.00', '4', '1442063027')
+;
+INSERT INTO biz_trade_2 (`id`, `biz_id`, `tid`, `buyer_nick`, `payment`, `status`, `pay_time`) VALUES
+ ('14101', '10682', '9942380642', 'buyer-14101', '234.00', '8', '1440241463')
+,('14102', '10682', '9942613370', 'buyer-14102', '68.00', '7', '1440244637')
+,('14103', '10682', '9942376705', 'buyer-14103', '78.00', '7', '1440241830')
+,('14104', '10682', '9945096884', 'buyer-14104', '68.00', '8', '1440296694')
+,('14105', '10682', '9947481318', 'buyer-14105', '38.00', '7', '1440328505')
+,('14106', '10682', '9948633431', 'buyer-14106', '125.00', '7', '1440341566')
+,('14107', '10682', '9948977357', 'buyer-14107', '65.00', '7', '1440347616')
+,('14108', '10682', '9949791921', 'buyer-14108', '86.00', '7', '1440380269')
+,('14109', '10682', '9950692318', 'buyer-14109', '293.00', '7', '1440384020')
+,('14110', '10682', '9950901922', 'buyer-14110', '140.00', '7', '1440385628')
+;
+INSERT INTO `biz_trade_3` (`id`, `biz_id`, `tid`, `buyer_nick`, `payment`, `status`, `pay_time`) VALUES
+ ('14465', '13883', '10076280194', 'buyer-14465', '38.00', '4', '1442164006')
+,('14464', '13883', '10076030070', 'buyer-14464', '38.00', '4', '1442158462')
+,('14466', '13883', '10076025847', 'buyer-14466', '76.00', '4', '1442171149')
+,('14463', '13883', '10075416245', 'buyer-14463', '65.00', '4', '1442152460')
+,('14467', '13883', '10075246637', 'buyer-14467', '49.00', '4', '1442150871')
+,('14462', '13883', '10074883183', 'buyer-14462', '775.00', '4', '1442150245')
+,('14461', '13883', '10074849618', 'buyer-14461', '398.00', '4', '1442146295')
+,('14460', '13883', '10074149306', 'buyer-14460', '56.00', '4', '1442136858')
+,('14459', '13883', '10073998999', 'buyer-14459', '232.00', '4', '1442138782')
+,('14457', '13883', '10073828053', 'buyer-14457', '38.00', '4', '1442133343')
 ;

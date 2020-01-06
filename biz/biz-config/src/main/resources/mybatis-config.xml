@@ -24,17 +24,16 @@
         <setting name="logImpl" value="LOG4J2"/>
     </settings>
     <plugins>
+        <!-- shardKeyTableNumber 通过 ShardView 传递 -->
         <plugin interceptor="common.shard.ShardTableInterceptor">
-            <!-- 测试期间用于打印分表分库的 sql 语句，默认为 false 即不打印 -->
-            <property name="isPrintShardSqlInfo" value="true"/>
-            <!-- 直接分表 -->
-            <property name="shardTablesByKeyDirectly" value=""/>
-            <!-- 主键除以 divideByValue 得到的值作为分表依据 -->
-            <property name="shardTablesByKeyDivideBy" value=""/>
+            <!-- 直接将 shardKeyTableNumber 作为分表后缀的表，以逗号隔开 -->
+            <property name="shardTableByKeyDirectlyTables" value="edu_student"/>
+            <!-- shardKeyTableNumber 除以 divideByValue 得到的值作为分表后缀的表，以逗号隔开 -->
+            <property name="shardTableByKeyDivideByTables" value=""/>
             <!-- 针对上面参数的除数 -->
             <property name="divideByValue" value="10"/>
-            <!-- 默认数据源的 key -->
-            <property name="defaultSchemaKey" value="system"/>
+            <!-- 测试期间用于打印分表分库的 sql 语句，默认为 false 即不打印 -->
+            <property name="isPrintShardSqlInfo" value="true"/>
         </plugin>
     </plugins>
 </configuration>

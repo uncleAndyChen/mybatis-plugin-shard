@@ -8,9 +8,8 @@
         <version>1.0.0</version>
         <relativePath>../../dependencies</relativePath>
     </parent>
-    <artifactId>shard-boot</artifactId>
+    <artifactId>boot</artifactId>
     <version>1.0</version>
-    <name>shard-boot</name>
     <description>mybatis-plugin-shard</description>
 
     <dependencyManagement>

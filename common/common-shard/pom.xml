@@ -28,11 +28,6 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>${org.mybatis.spring.boot.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.lovesofttech</groupId>
-            <artifactId>common-lib</artifactId>
-            <version>1.0.0</version>
-        </dependency>
     </dependencies>
 
     <build>
