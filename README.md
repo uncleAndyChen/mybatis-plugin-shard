@@ -78,14 +78,14 @@ mvn install
 请参考 [docs/README.md](./docs/README.md)
 
 # 有关 {xxx}Mapper.xml 文件
-我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，比如：biz.mapper.xml.original
+我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，包名为：`biz.mapper.xml.original` 和 `biz.mapper.xml.extend`
 
-默认情况下，xml 文件不会被打包，所以，运行的时候会出现这样的错误：
+默认情况下，xml 文件不会被打包，所以，运行的时候会出现类似这样的错误：
 ```
 Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentMapper.selectByExample
 ```
 
-需要在 pom.xml 里设置为需要将 xml 一起打包，如下：
+解决：需要在 pom.xml 里设置为需要将 xml 一起打包，如下：
 ```
 <build>
     <resources>
