@@ -6,9 +6,27 @@
 
 以后会出详细的文档，敬请期待。
 
+# todo
+- [ ] 完善分表逻辑
+- [ ] 将分表需要的参数添加到插件属性而不是配置文件
+- [ ] 完善文档
+
 # 项目地址
 - github: https://github.com/uncleAndyChen/mybatis-plugin-shard
 - gitee:  https://gitee.com/uncleAndyChen/mybatis-plugin-shard
+
+# maven 依赖版本
+maven 依赖版本在 `./dependencies/pom.xml` 维护，如果要升级某一框架的版本，只需要修改这个文件就行，这个文件被作为其它 module 的 parent 依赖项。
+
+- JDK 1.8，理论上支持 1.8 以上的版本，只需修改 `./dependencies/pom.xml`，比如要改为 JDK 11，将 `<java.version>1.8</java.version>` 改为 `<java.version>11</java.version>`
+- MySQL 5.7，用这个版本作的测试，理念上支持 5.7 及以上版本。
+
+以下依赖为当前（2020-01-06）最新版本
+- spring-boot 2.2.2.RELEASE
+- MyBatis 3.5.3
+- druid 1.1.21
+- lombok 1.18.10
+- jackson 2.10.1
 
 # 功能详述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
@@ -59,7 +77,26 @@ mvn install
 # 重新生成 mapper 和 entity
 请参考 [docs/README.md](./docs/README.md)
 
-# todo
-- [ ] 完善分表逻辑
-- [ ] 将分表需要的参数添加到插件属性而不是配置文件
-- [ ] 完善文档
+# 有关 {xxx}Mapper.xml 文件
+我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，比如：biz.mapper.xml.original
+
+默认情况下，xml 文件不会被打包，所以，运行的时候会出现这样的错误：
+```
+Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentMapper.selectByExample
+```
+
+需要在 pom.xml 里设置为需要将 xml 一起打包，如下：
+```
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+            <filtering>false</filtering>
+        </resource>
+    </resources>
+</build>
+```
+> directory 配置到 xml 的父目录 `src/main/java/biz/mapper/xml` 不会生效，配置成 `src/main/java` 就好。

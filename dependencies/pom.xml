@@ -19,6 +19,7 @@
         <springframework.boot.version>2.2.2.RELEASE</springframework.boot.version>
         <springframework.version>5.2.2.RELEASE</springframework.version>
         <mybatis.version>3.5.3</mybatis.version>
+        <mybatis-spring-boot-starter.version>2.1.1</mybatis-spring-boot-starter.version>
         <druid.version>1.1.21</druid.version>
         <mysql-connector.version>8.0.18</mysql-connector.version>
         <jackson.version>2.10.1</jackson.version>
