@@ -155,3 +155,9 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
         - druid 1.1.21
         - lombok 1.18.10
         - jackson 2.10.1
+
+# 支持
+如果有疑问，请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)，可能不会立即回复，尤其在上班期间，我会尽量抽业余时间回复的。
+
+# 如果帮到了你
+请 Star 一下以表肯定，同时让我更加有动力继续完善和优化。
