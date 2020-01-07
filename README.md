@@ -12,8 +12,8 @@
 - [ ] 完善文档
 
 # 项目地址
-- github: https://github.com/uncleAndyChen/mybatis-plugin-shard
-- gitee: &nbsp;&nbsp;https://gitee.com/uncleAndyChen/mybatis-plugin-shard
+- github: [https://github.com/uncleAndyChen/mybatis-plugin-shard](https://github.com/uncleAndyChen/mybatis-plugin-shard)
+- gitee: &nbsp;&nbsp;[https://gitee.com/uncleAndyChen/mybatis-plugin-shard](https://gitee.com/uncleAndyChen/mybatis-plugin-shard)
 
 # 配套 MBG 增强插件
 查看 MBG 增强插件请移步：[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)
