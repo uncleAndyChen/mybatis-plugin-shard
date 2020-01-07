@@ -13,37 +13,81 @@
 
 # 项目地址
 - github: https://github.com/uncleAndyChen/mybatis-plugin-shard
-- gitee:  https://gitee.com/uncleAndyChen/mybatis-plugin-shard
+- gitee: &nbsp;&nbsp;https://gitee.com/uncleAndyChen/mybatis-plugin-shard
 
-# 功能详述
+# 配套 MBG 增强插件
+查看 MBG 增强插件请移步：[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)
+- 用该 MBG 增强插件生成的 {xxx}Mapper.xml，会把表名用[\`]（不包括中括号）引起来，这样做的目的是分表时，动态给表名添加后缀后替换原始表名时不会“添乱”。
+- 注意 [\`] 并非单引号，是在ESC 键下面、Q 键左上角的数字键 1 的左边那个键对应的“单引号”。
+- 比如有两张表：biz_trade、biz_trade_order，现在需要动态将 biz_trade 替换成 biz_trade_9，如果表名前后没有[\`]，则 biz_trade_order 也会被替换，替换后为：biz_trade_9_order，这显然不是我们希望发生的。
+
+# 功能概述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
-- 分表：对于同一数据源或不同数据源下的，相同表结构的表，通过简单配置，实现分表查询功能。
+- 分表：对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能。
     - 适用数据量增加迅速的业务场景。
     - 底层实现：基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行。
+        - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
 
 # 动态切换数据源的三种方式
-- 通过参数指定：优先级最高，也最灵活。
+- 通过参数 [ShardView.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardView.java) 指定：优先级最高，也最灵活。
     - 可以根据具体业务场景决定要连接哪个数据源，无论是分表还是分库都可以灵活应对。
-- 注解
-    - 方法注解，优先级高于类注解。
-    - 类注解。
-- dal service 配置
-    - 以上两种方式均没有的情况下，会读取配置信息。
-    - 事先在配置文件 db-shard.properties 中配置好 biz.service.{schema key} 对应的服务类接口，在运行过程中，通过 AOP 拦截 biz.service，从而识别应该使用哪个数据源，达到分库/多数据源动态切换的目的。
+- 注解：可用在类和方法上，方法注解优先于类注解。
+- biz service 配置
+    - 以上两种方式均没有的情况下，会读取 biz.service.{shardKeySchema} 配置信息。
+    - 事先在配置文件 db-shard.properties 中配置好 biz.service.{shardKeySchema} 对应的服务类接口，在运行过程中，通过 AOP 拦截 biz.service，从而识别应该使用哪个数据源，达到分库/多数据源动态切换的目的。
     - 这种方式的优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
 
 如果以上三种方式都没有找到数据源，则使用默认的数据源。
 
-# 分表场景与分库分表思路
-- 分表场景：SaaS 平台，用户量成千上万，交易表 biz_trade 每天100万级增长，如果只用一个库的一张表，写入和读取压力非常大，会成为瓶颈，所以需要分库分表。
+# 分库分表思路
 - 分库思路：
-    - 分库：每个用户分配一个用于分库的标志，可以是数字，可以是库名。
+    - 每个库有一个唯一的标志，起名叫 shardKeySchema，每个数据库的 shardKeySchema 与 [db-source.xml](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml) 定义的数据源 dataSource -> targetDataSources -> map -> key 一一对应。
+    - 用户在初始化时根据业务规则分配到某一个库，将该库的 shardKeySchema 保存到用户表。
 - 分表思路：
-    - 分库：每个用户分配一个用于分库的标志，可以是数字，可以是库名。
-    - 分表：每个用户分配一个用于分表的数字编号 shardKeyTableNumber。
-        - 按一定规则平均分配，比如分配到当前数据库的有10万个用户，将这10万个用户的订单平均分到10张表，那么，平均分配的话，就意味着每一万个用户用一个数字编号。
-        - 用户要操作数据时，将用户的 shardKeyTableNumber 除以10，将余数作为分表后缀，比如用户的 shardKeyTableNumber=8888，那么，8888%10=8，则用户的交易表是 biz_trade_8。
-            - 同理，如果要平均分配到50张表，那么就除以50再取余作为分表后续，8888%50=38，则用户的交易表是 biz_trade_38。
+    - 每个用户分配一个用于分表的数字编号 shardKeyTableNumber，同样保存到用户表。
+- 用户表：
+    - 集中在一个库用于统一登录验证，登录时获取用户 shardKeySchema 和 shardKeyTableNumber 并将用户登录信息缓存于非关系型数据库，业界常用的如 redis、memcached。
+- 业务操作请求：
+    - 在请求数据时，就可以根据 shardKeySchema 动态切换数据源，根据 shardKeyTableNumber 决定查哪张表了（分表操作通过 MyBatis 插件实现）。
+
+# 分表分库场景
+- 场景一：
+    - SaaS 平台，用户量成千上万，交易表 biz_trade 每天100万级增长，如果只用一个库的一张表，写入和读取压力会非常大，会成为瓶颈，所以需要分库分表。
+    - 请求数据时，需要通过 [ShardView.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardView.java) 传 shardKeySchema 和 shardKeyTableNumber 参数。
+    - 业务场景之：平均分配
+        - 每个数据库实例最多分配 10 万用户，超过 10 万的用户，再分配到新库。
+        - 交易记录平均分到 10 张表，这就意味着用于分表的 shardKeyTableNumber，一个数字编号最多同时分配给一万个用户。
+        - 用户请求数据时，将用户的 shardKeyTableNumber 除以 10，将余数作为分表后缀，比如用户的 shardKeyTableNumber=8888，那么，8888%10=8，则用户的交易表是 biz_trade_8。
+        - 同理，如果要平均分配到 100 张表，那么就除以 100 再取余作为分表后缀，8888%100=88，则用户的交易表是 biz_trade_88。
+    - 业务场景之：区别对待
+        - 在平均分配的基础上，由于运营需要，现在有 vip 客户，要保证 vip 客户的用户体验，vip 客户的数据库读写速度要快，那怎么办呢？
+        - 其实只要针对这部分用户再制定一套规则就可以了，因为 shardKeySchema 和 shardKeyTableNumber 都是可以指定的。
+        - 如果用户由一般用户变为了 vip 用户，那么在重新指定 shardKeySchema 和 shardKeyTableNumber 之后，用户原来的数据做相应的迁移即可。
+- 场景二：
+    - 不同于场景一，在某一些业务场景，需要与其它业务系统做对接，在其它系统不能提供 api 的情况下，直接操作数据库无疑是最快也最直接的方式。
+    - 这种情况，不同业务数据保存在不同的数据库，请求数据的时候，对于从哪个数据库请求数据是明确的，那么最直接的方式就是使用注解，或者配置 biz.service.{shardKeySchema} 对应的服务接口全路径名列表。
+    - 在不需要分表的情况下，用注解和配置 biz.service.{shardKeySchema} 就够了，这种情况下请求数据时，不需要通过 ShardView（[ShardView.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardView.java)）传 shardKeySchema 和 shardKeyTableNumber 参数。
+    - 当然，也可以不用注解也不用配置 biz.service.{shardKeySchema}，还是通过 ShardView 传递参数也行，怎么灵活怎么来。
+- 场景三：
+    - 分表是确定的，不是动态分配的，那么 [ShardView.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardView.java) 只传 shardKeyTable 即可。
+
+# 分表插件配置
+在 mybatis-config.xml 中配置。
+```xml
+<plugins>
+    <!-- shardKeyTableNumber 通过 ShardView 传递 -->
+    <plugin interceptor="common.shard.ShardTableInterceptor">
+        <!-- 直接将 shardKeyTableNumber 作为分表后缀的表，以逗号隔开 -->
+        <property name="shardTableByKeyDirectlyTables" value="edu_student"/>
+        <!-- 针对下面参数 shardTableByKeyDivideByTables 的除数 -->
+        <property name="divideByValue" value="10"/>
+        <!-- shardKeyTableNumber 除以 divideByValue 得到的值作为分表后缀的表，以逗号隔开 -->
+        <property name="shardTableByKeyDivideByTables" value="biz_trade"/>
+        <!-- 测试期间用于打印分表分库的 sql 语句，默认为 false 即不打印 -->
+        <property name="isPrintShardSqlInfo" value="true"/>
+    </plugin>
+</plugins>
+```
 
 # 运行
 - `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
