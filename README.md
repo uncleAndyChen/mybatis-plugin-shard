@@ -34,8 +34,14 @@
 
 如果以上三种方式都没有找到数据源，则使用默认的数据源。
 
-# 分表场景
-场景：SaaS 平台，每个用户分配一个编码值，可以按一定规则平均分配，比如现有10万个用户，我们打算分10张表，那么，平均分配的话，就有意味着每一万个用户有一个编码值。
+# 分表场景与分表思路
+- 分表场景：SaaS 平台，用户量成千上万，交易表 biz_trade 每天100万级增长，如果只用一个库的一张表，写入和读取压力非常大，会成为瓶颈，所以需要分库分表。
+- 分表思路：
+    - 分库：每个用户分配一个用于分库的标志，可以是数字，可以是库名。
+    - 分表：每个用户分配一个用于分表的数字编号 shardKeyTableNumber。
+        - 按一定规则平均分配，比如分配到当前数据库的有10万个用户，将这10万个用户的订单平均分到10张表，那么，平均分配的话，就意味着每一万个用户用一个数字编号。
+        - 用户要操作数据时，将用户的 shardKeyTableNumber 除以10，将余数作为分表后缀，比如用户的 shardKeyTableNumber=8888，那么，8888%10=8，则用户的交易表是 biz_trade_8。
+            - 同理，如果要平均分配到50张表，那么就除以50再取余作为分表后续，8888%50=38，则用户的交易表是 biz_trade_38。
 
 # 运行
 - `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
@@ -62,10 +68,10 @@ mvn install
 - 修改 `biz/biz-config/src/main/resources/jdbc.properties` 中连接数据库的参数
 - 启动
 - 访问：`http://localhost:81/api`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
-![](./docs/api-test.png)
+![](https://www.lovesofttech.com/img/java/mybatis-shard-api-test.png)
 
 # 重新生成 mapper 和 entity
-请参考 [docs/README.md](./docs/README.md)
+请参考 [生成 Mapper 操作](https://github.com/uncleAndyChen/mybatis-plugin-shard/tree/master/docs)
 
 # 有关 {xxx}Mapper.xml 文件
 我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，包名为：`biz.mapper.xml.original` 和 `biz.mapper.xml.extend`
