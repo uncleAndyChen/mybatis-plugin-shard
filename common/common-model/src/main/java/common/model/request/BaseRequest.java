@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 继承自 ShardRequest 是为了动态切换数据源，需要用到 ShardRequest.ShardView
+ * 继承自 ShardRequest 是为了动态切换数据源
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

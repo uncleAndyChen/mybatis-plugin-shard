@@ -4,7 +4,6 @@ import biz.facade.facade.IApiAdapterService;
 import biz.service.facade.IEduStudentService;
 import biz.service.facade.IFinMajorTuitionGradeService;
 import biz.service.SysDeptService;
-import common.shard.ShardView;
 import common.model.ModelHelper;
 import common.model.request.BaseRequest;
 import common.model.response.ApiResponse;
@@ -35,20 +34,17 @@ public class ApiAdapterServiceImpl implements IApiAdapterService {
         if (baseRequest.getMethod() == null) {
             return ModelHelper.getApiResponseByResponseCodeEnum(ResponseCodeEnum.noSuchMethodException);
         }
-        ShardView shardView;
 
         switch (baseRequest.getMethod()) {
             // 分表，后缀为 2
             case "getAllActivityStudentSearchResponse":
-                shardView = new ShardView("student");
-                shardView.setShardKeyTableNumber(2);
-                baseRequest.setShardView(shardView);
+                baseRequest.setShardKeySchema("student");
+                baseRequest.setShardKeyTableNumber(2);
                 break;
             // 分表，后缀为 3
             case "getAllActivityStudent":
-                shardView = new ShardView("student");
-                shardView.setShardKeyTableNumber(3);
-                baseRequest.setShardView(shardView);
+                baseRequest.setShardKeySchema("student");
+                baseRequest.setShardKeyTableNumber(3);
                 break;
         }
 

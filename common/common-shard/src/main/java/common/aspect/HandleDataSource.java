@@ -1,10 +1,10 @@
 package common.aspect;
 
-import common.shard.ShardView;
+import common.shard.ShardRequest;
 
 public class HandleDataSource {
     private static final ThreadLocal<String> schemaKey = new ThreadLocal<>();
-    private static final ThreadLocal<ShardView> shardViewThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<ShardRequest> shardRequestThreadLocal = new ThreadLocal<>();
 
     /**
      * 绑定当前线程数据源路由的key
@@ -20,16 +20,16 @@ public class HandleDataSource {
         return schemaKey.get();
     }
 
-    public static void setShardView(ShardView shardView) {
-        shardViewThreadLocal.set(shardView);
+    public static void setShardRequest(ShardRequest shardRequest) {
+        shardRequestThreadLocal.set(shardRequest);
     }
 
     public static void removeVariables() {
-        shardViewThreadLocal.remove();
+        shardRequestThreadLocal.remove();
         schemaKey.remove();
     }
 
-    public static ShardView getShardView() {
-        return shardViewThreadLocal.get();
+    public static ShardRequest getShardRequest() {
+        return shardRequestThreadLocal.get();
     }
 }

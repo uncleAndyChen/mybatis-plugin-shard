@@ -7,28 +7,28 @@ import org.apache.commons.logging.LogFactory;
 public class ShardTablePolicy {
     private static Log log = LogFactory.getLog(ShardTablePolicy.class);
 
-    public static String getRealExecuteSql(String originalSql, ShardView shardView) {
+    public static String getRealExecuteSql(String originalSql, ShardRequest shardRequest) {
         String convertedSql = originalSql;
         String convertedTableName;
 
         // 针对直接添加后缀的表
         // 基于编号分表的策略优先
-        if (shardView.getShardKeyTableNumber() > 0) {
+        if (shardRequest.getShardKeyTableNumber() > 0) {
             for (String tableName : ShardTableConfigView.shardTableByKeyDirectlyList) {
-                convertedTableName = "`" + tableName + "_" + shardView.getShardKeyTableNumber() + "`";
+                convertedTableName = "`" + tableName + "_" + shardRequest.getShardKeyTableNumber() + "`";
                 convertedSql = convertedSql.replaceAll("`" + tableName + "`", convertedTableName);
             }
-        } else if (shardView.getShardKeyTable() != null && shardView.getShardKeyTable().length() > 0) {
+        } else if (shardRequest.getShardKeyTable() != null && shardRequest.getShardKeyTable().length() > 0) {
             for (String tableName : ShardTableConfigView.shardTableByKeyDirectlyList) {
-                convertedTableName = "`" + tableName + "_" + shardView.getShardKeyTable() + "`";
+                convertedTableName = "`" + tableName + "_" + shardRequest.getShardKeyTable() + "`";
                 convertedSql = convertedSql.replaceAll("`" + tableName + "`", convertedTableName);
             }
         }
 
         // 针对需要除一个数得到后缀的表
-        if (shardView.getShardKeyTableNumber() > 0 && ShardTableConfigView.divideByValue > 1) {
+        if (shardRequest.getShardKeyTableNumber() > 0 && ShardTableConfigView.divideByValue > 1) {
             for (String tableName : ShardTableConfigView.shardTableByKeyDivideByList) {
-                convertedTableName = "`" + tableName + "_" + getByKeyDivideBy(shardView.getShardKeyTableNumber()) + "`";
+                convertedTableName = "`" + tableName + "_" + getByKeyDivideBy(shardRequest.getShardKeyTableNumber()) + "`";
                 convertedSql = convertedSql.replaceAll("`" + tableName + "`", convertedTableName);
             }
         }

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class WebController {
-    @RequestMapping(value = "/api")
+    @RequestMapping(value = {"/", "/api"})
     public ModelAndView sysApi(HttpServletRequest request) {
         return new ModelAndView("api");
     }

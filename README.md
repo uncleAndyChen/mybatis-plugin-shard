@@ -113,7 +113,7 @@ mvn install
 - MySQL 数据库，导入 `docs/schemas.sql`
 - 修改 `biz/biz-config/src/main/resources/jdbc.properties` 中连接数据库的参数
 - 启动
-- 访问：`http://localhost:81/api`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
+- 访问：`http://localhost:81`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
 ![](https://www.lovesofttech.com/img/java/mybatis-shard-api-test.png)
 
 # 重新生成 mapper 和 entity

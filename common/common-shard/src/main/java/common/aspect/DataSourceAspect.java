@@ -1,7 +1,6 @@
 package common.aspect;
 
 import common.shard.ShardRequest;
-import common.shard.ShardView;
 import common.shard.TargetDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -40,7 +39,7 @@ public class DataSourceAspect {
     }
 
     /**
-     * 1. 如果第一个参数是 ShardView 类型，并且指定了一个存在的数据源 key，则使用这个数据源
+     * 1. 如果第一个参数是 ShardRequest 类型，并且指定了一个存在的数据源 key，则使用这个数据源
      * 2. 通过注解的方式指定了正确的数据源，则使用这个数据源
      * 3. biz.service 接口类如果配置在某一个数据源下，则使用这个数据源
      * 4. 以上三类都不符合，则使用默认数据源
@@ -65,7 +64,7 @@ public class DataSourceAspect {
     }
 
     /**
-     * 如果第一个参数是 ShardView 类型，并且指定了一个存在的数据源 key，则使用这个数据源
+     * 如果第一个参数是 ShardRequest 类型，并且指定了一个存在的数据源 key，则使用这个数据源
      */
     private boolean isAppointSchemaKey(JoinPoint point) throws Exception {
         Object[] args = point.getArgs();
@@ -75,22 +74,17 @@ public class DataSourceAspect {
         }
 
         ShardRequest shardRequest = (ShardRequest) args[0];
-        ShardView shardView = shardRequest.getShardView();
 
-        if (shardView == null) {
+        if (shardRequest.getShardKeySchema().length() == 0) {
             return false;
         }
 
-        if (shardView.getShardKeySchema().length() == 0) {
-            return false;
+        if (isIncorrectSchemaKey(shardRequest.getShardKeySchema())) {
+            throw new Exception(String.format(incorrectShardSchemaKey, shardRequest.getShardKeySchema()));
         }
 
-        if (isIncorrectSchemaKey(shardView.getShardKeySchema())) {
-            throw new Exception(String.format(incorrectShardSchemaKey, shardView.getShardKeySchema()));
-        }
-
-        HandleDataSource.putSchemaKey(shardView.getShardKeySchema());
-        HandleDataSource.setShardView(shardView);
+        HandleDataSource.putSchemaKey(shardRequest.getShardKeySchema());
+        HandleDataSource.setShardRequest(shardRequest);
         return true;
     }
 

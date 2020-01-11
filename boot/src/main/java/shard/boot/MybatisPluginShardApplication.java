@@ -16,8 +16,8 @@ import org.springframework.context.annotation.ImportResource;
         "biz.facade.impl",
         "biz.service.impl"})
 @SpringBootApplication
-public class ShardApplication {
+public class MybatisPluginShardApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ShardApplication.class, args);
+        SpringApplication.run(MybatisPluginShardApplication.class, args);
     }
 }

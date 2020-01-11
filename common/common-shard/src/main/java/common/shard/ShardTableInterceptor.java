@@ -12,7 +12,6 @@ import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -77,17 +76,17 @@ public class ShardTableInterceptor implements Interceptor {
             return;
         }
 
-        ShardView shardView = HandleDataSource.getShardView();
+        ShardRequest shardRequest = HandleDataSource.getShardRequest();
 
-        if (shardView == null) {
+        if (shardRequest == null) {
             return;
         }
 
-        if ((shardView.getShardKeyTable() == null || shardView.getShardKeyTable().length() == 0) && shardView.getShardKeyTableNumber() < 1) {
+        if ((shardRequest.getShardKeyTable() == null || shardRequest.getShardKeyTable().length() == 0) && shardRequest.getShardKeyTableNumber() < 1) {
             return;
         }
 
-        metaStatementHandler.setValue("delegate.boundSql.sql", ShardTablePolicy.getRealExecuteSql(originalSql, shardView));
+        metaStatementHandler.setValue("delegate.boundSql.sql", ShardTablePolicy.getRealExecuteSql(originalSql, shardRequest));
     }
 
     private static void setListByStringSource(List<String> targetList, String sourceKeys) {
