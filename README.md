@@ -113,7 +113,7 @@ mvn install
 </bean>
 ```
 
-# 配置分表分库配置类 ShardConfig.java
+# 配置分表分库配置类
 ```xml
 <!-- 以下配置，部分表名只是用于配置示例，仅为了更好的展示如何配置。
     本项目没有用到的表名有：edu_class、biz_trade_order、biz_item、biz_item_sku
@@ -202,8 +202,6 @@ mvn install
 
 # 请求参数 ShardRequest.java 类
 ```java
-package common.shard;
-
 public class ShardRequest {
     /**
      * 分库标志 key，是定义数据源时指定的 key，在执行数据库操作之前，通过该 key 动态切换数据源。
@@ -233,39 +231,8 @@ public class ShardRequest {
      */
     private int shardKeyTableNumber;
 
-    public ShardRequest(String shardKeySchema) {
-        this.shardKeySchema = shardKeySchema;
-    }
-
-    public ShardRequest() {
-        this.shardKeySchema = "";
-        this.shardKeyTable = "";
-        this.shardKeyTableNumber = -1;
-    }
-
-    public String getShardKeySchema() {
-        return shardKeySchema;
-    }
-
-    public void setShardKeySchema(String shardKeySchema) {
-        this.shardKeySchema = shardKeySchema;
-    }
-
-    public String getShardKeyTable() {
-        return shardKeyTable;
-    }
-
-    public void setShardKeyTable(String shardKeyTable) {
-        this.shardKeyTable = shardKeyTable;
-    }
-
-    public int getShardKeyTableNumber() {
-        return shardKeyTableNumber;
-    }
-
-    public void setShardKeyTableNumber(int shardKeyTableNumber) {
-        this.shardKeyTableNumber = shardKeyTableNumber;
-    }
+    // getter and setter
+    // ...
 }
 ```
 
@@ -310,7 +277,8 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
         - jackson 2.10.1
 
 # 支持
-如果有疑问，请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)，可能不会立即回复，尤其在上班期间，我会尽量抽业余时间回复的。
+如果有疑问或建议，欢迎请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)。
+可能不会立即回复，尤其上班时间，不过我会尽量抽业余时间回复的。
 
 # 如果帮到了你
-请 Star 一下以表肯定，同时让我更加有动力继续完善和优化。
+请 Star 一下，让我有动力继续完善和优化。
