@@ -10,7 +10,6 @@
         <property name="locations">
             <list>
                 <value>classpath:jdbc.properties</value>
-                <value>classpath:db-shard.properties</value>
             </list>
         </property>
     </bean>
@@ -128,18 +127,91 @@
     </bean>
 
     <bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">
+        <property name="defaultTargetDataSource" ref="dataSourceSystem"/>
+        <!-- 下面的各个 0key 需要配置到 shardTableConfigView 的 schemaKeyList -->
         <property name="targetDataSources">
             <map key-type="java.lang.String">
-                <entry key="${data.source.key.system}" value-ref="dataSourceSystem"/>
-                <entry key="${data.source.key.student}" value-ref="dataSourceStudent"/>
-                <entry key="${data.source.key.finance}" value-ref="dataSourceFinance"/>
-                <entry key="${data.source.key.biz}" value-ref="dataSourceBiz"/>
+                <entry key="system" value-ref="dataSourceSystem"/>
+                <entry key="student" value-ref="dataSourceStudent"/>
+                <entry key="finance" value-ref="dataSourceFinance"/>
+                <entry key="biz" value-ref="dataSourceBiz"/>
             </map>
         </property>
-        <property name="defaultTargetDataSource" ref="dataSourceSystem"/>
     </bean>
 
-    <bean id="dataSourceAspect" class="common.aspect.DataSourceAspect"/>
+    <!-- 以下配置，部分表名只是用于配置示例，仅为了更好的展示如何配置。
+        本项目没有用到的表名有：edu_class、biz_trade_order、biz_item、biz_item_sku
+    -->
+    <bean id="shardConfig" class="common.shard.ShardConfig" >
+        <!-- 列表值为 dataSource.targetDataSources 的 keys  -->
+        <property name="schemaKeyList">
+            <list>
+                <value>system</value>
+                <value>student</value>
+                <value>finance</value>
+                <value>biz</value>
+            </list>
+        </property>
+        <!-- 基于服务接口分库策略，
+            把针对某个 schema 的接口配置在该数据源 key 对应的 list 下，没有就不配置
+        -->
+        <property name="shardSchemaInterfaceClassNameList">
+            <map>
+                <entry key="student">
+                    <list>
+                        <value>biz.service.facade.IEduStudentService</value>
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <!-- 分表策略
+            直接将 ShardRequest.shardKeyTable（优先级高于后者） 或 ShardRequest.shardKeyTableNumber 作为分表后缀的表。
+             ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+         -->
+        <property name="shardTableDirectlyList">
+            <list>
+                <value>edu_student</value>
+                <value>edu_class</value>
+            </list>
+        </property>
+        <!-- 分表策略
+            通过两个数相除取余作为后缀的表，配合 ShardRequest.shardKeyTableNumber 使用
+            ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+        -->
+        <!-- key 将作为 shardKeyTableNumber 的除数（取余）， 余数作为分表后缀-->
+        <!-- shardKeyTableNumber 通过 ShardRequest 传递，在请求 api 时传递 -->
+        <property name="shardTableDivideList">
+            <map>
+                <entry key="10">
+                    <list>
+                        <value>biz_trade</value>
+                        <value>biz_trade_order</value>
+                    </list>
+                </entry>
+                <entry key="5">
+                    <list>
+                        <value>biz_item</value>
+                        <value>biz_item_sku</value>
+                    </list>
+                </entry>
+            </map>
+        </property>
+        <!-- 打印分表的 sql 语句，默认为 false 即不打印。-->
+        <property name="printShardSqlInfo" value="true" />
+        <!-- 不需要分表的 sql 语句列表，以下这句为 MyBatis 操作数据库新增记录时，查询新增的主键值的语句 -->
+        <property name="notNeedShardSqlList">
+            <list>
+                <value>SELECT LAST_INSERT_ID()</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 用于切面，实现拦截数据库操作，实现分库分表的类 -->
+    <bean id="dataSourceAspect" class="common.aspect.DataSourceAspect">
+        <property name="shardTableConfigView" ref="shardConfig" />
+    </bean>
+
+    <!-- 定义切面，用于拦截数据库操作，实现分库分表 -->
     <aop:config proxy-target-class="true">
         <aop:aspect id="dataSourceAspect" ref="dataSourceAspect" order="1">
             <aop:pointcut id="point" expression="(execution(* biz.service.impl.*.*(..)))"/>

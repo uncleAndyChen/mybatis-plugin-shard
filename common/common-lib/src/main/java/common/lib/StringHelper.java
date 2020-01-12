@@ -1,6 +1,8 @@
 package common.lib;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,5 +112,14 @@ public class StringHelper {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         Matcher isNum = pattern.matcher(str);
         return isNum.matches();
+    }
+
+    public static void setListByStringSource(List<String> targetList, String sourceKeys) {
+        if (sourceKeys.length() == 0) {
+            return;
+        }
+
+        String[] keyArray = sourceKeys.split(",");
+        targetList.addAll(Arrays.asList(keyArray));
     }
 }

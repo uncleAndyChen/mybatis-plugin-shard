@@ -1,47 +1,27 @@
 package common.aspect;
 
 import common.shard.ShardRequest;
+import common.shard.ShardConfig;
 import common.shard.TargetDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Properties;
+import java.util.List;
 
 public class DataSourceAspect {
-    private static Properties dbShardProperties = new Properties();
-    private static String[] allSchemaKeys;
+    public static ShardConfig shardConfig;
     private final String incorrectShardSchemaKey = "incorrect shard schema key:%s";
 
-    static {
-        try {
-            dbShardProperties = PropertiesLoaderUtils.loadAllProperties("db-shard.properties");
-            allSchemaKeys = getValue("data.source.keys.all").split(",");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (dbShardProperties.size() == 0) {
-            // 控制台输出中文可能会显示成乱码，所以异常信息也同时包含了英文
-            throw new IllegalArgumentException("没有找到配置文件db-shard.properties，或该文件里没有配置项。" +
-                    "请在这个文件里添加配置项，需要把这个文件放到 classpath 下，比如 启动项目的 resources 目录。\n" +
-                    "更详细的说明，请参照: https://github.com/uncleAndyChen/mybatis-plugin-shard \n" +
-                    "not find db-shard.properties file, or no item in this file. " +
-                    "please put config item in this file, " +
-                    "the item include: \n" +
-                    "data.source.key.{db source key}(should be more then one),\n" +
-                    "data.source.keys.all,\n" +
-                    "biz.service.{db source key}(should be more then one)\n" +
-                    "help: https://github.com/uncleAndyChen/mybatis-plugin-shard \n");
-        }
+    public void setShardTableConfigView(ShardConfig shardConfig) {
+        DataSourceAspect.shardConfig = shardConfig;
     }
 
     /**
+     * 分库策略
      * 1. 如果第一个参数是 ShardRequest 类型，并且指定了一个存在的数据源 key，则使用这个数据源
      * 2. 通过注解的方式指定了正确的数据源，则使用这个数据源
-     * 3. biz.service 接口类如果配置在某一个数据源下，则使用这个数据源
+     * 3. biz.service 接口类名如果配置在某一个数据源 key 下的接口名列表中（ShardConfig.shardSchemaInterfaceClassNameList），则使用这个数据源
      * 4. 以上三类都不符合，则使用默认数据源
      */
     public void before(JoinPoint point) throws Exception {
@@ -92,8 +72,8 @@ public class DataSourceAspect {
      * biz.service 接口类如果配置在某一个数据源下，则使用这个数据源
      */
     private void setTargetDataSourceFromBizServiceInterfaceName(Class<?>[] classes) {
-        for (String key : allSchemaKeys) {
-            if (isDbSourceConfigContainsMapperClass(classes[0].getName(), key)) {
+        for (String key : shardConfig.schemaKeyList) {
+            if (isShardSchemaInterfaceClassNameListContainsServiceInterfaceClassName(classes[0].getName(), key)) {
                 return;
             }
         }
@@ -102,36 +82,22 @@ public class DataSourceAspect {
     /**
      * 检查当前 biz.service 接口类是否包含在给定的数据源配置里
      *
-     * @param className   Mapper 类
-     * @param dbSourceKey 数据源配置
+     * @param className   服务接口类的全路径名称
+     * @param dbSourceKey 数据源配置 key
      */
-    private boolean isDbSourceConfigContainsMapperClass(String className, String dbSourceKey) {
-        String includeKey = getValue("biz.service." + dbSourceKey);
+    private boolean isShardSchemaInterfaceClassNameListContainsServiceInterfaceClassName(String className, String dbSourceKey) {
+        List<String> schemaInterfaceNameList = DataSourceAspect.shardConfig.shardSchemaInterfaceClassNameList.get(dbSourceKey);
 
-        if (includeKey.length() == 0) {
+        if (schemaInterfaceNameList == null) {
             return false;
         }
 
-        if (includeKey.contains(className)) {
+        if (schemaInterfaceNameList.contains(className)) {
             HandleDataSource.putSchemaKey(dbSourceKey);
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * 检查是否为错误的数据源 key
-     * 如果不在配置的数据源 allSchemaKeys 里，则返回 true
-     */
-    private boolean isIncorrectSchemaKey(String shardKeySchema) {
-        for (String keySchema : allSchemaKeys) {
-            if (shardKeySchema.equals(keySchema)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -143,21 +109,17 @@ public class DataSourceAspect {
         Class<?>[] parameterTypes = ((MethodSignature) point.getSignature()).getMethod().getParameterTypes();
         TargetDataSource targetDataSource;
 
-        try {
-            Method m = classes[0].getMethod(method, parameterTypes);
+        Method m = classes[0].getMethod(method, parameterTypes);
 
-            if (m != null && m.isAnnotationPresent(TargetDataSource.class)) {
-                targetDataSource = m.getAnnotation(TargetDataSource.class);
+        if (m != null && m.isAnnotationPresent(TargetDataSource.class)) {
+            targetDataSource = m.getAnnotation(TargetDataSource.class);
 
-                if (isIncorrectSchemaKey(targetDataSource.schemaKey())) {
-                    throw new Exception(String.format(incorrectShardSchemaKey, targetDataSource.schemaKey()));
-                }
-
-                HandleDataSource.putSchemaKey(targetDataSource.schemaKey());
-                return true;
+            if (isIncorrectSchemaKey(targetDataSource.schemaKey())) {
+                throw new Exception(String.format(incorrectShardSchemaKey, targetDataSource.schemaKey()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            HandleDataSource.putSchemaKey(targetDataSource.schemaKey());
+            return true;
         }
 
         if (classes[0].isAnnotationPresent(TargetDataSource.class)) {
@@ -174,7 +136,17 @@ public class DataSourceAspect {
         return false;
     }
 
-    private static String getValue(String key) {
-        return dbShardProperties.getProperty(key, "");
+    /**
+     * 检查是否为错误的数据源 key
+     * 如果不在配置的数据源 schemaKeyList 里，则返回 true
+     */
+    private boolean isIncorrectSchemaKey(String shardKeySchema) {
+        for (String keySchema : DataSourceAspect.shardConfig.schemaKeyList) {
+            if (shardKeySchema.equals(keySchema)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
