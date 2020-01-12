@@ -64,9 +64,9 @@
         - 如果用户由一般用户变为了 vip 用户，那么在重新指定 shardKeySchema 和 shardKeyTableNumber 之后，用户原来的数据做相应的迁移即可。
 - 场景二：
     - 不同于场景一，在某一些业务场景，需要与其它业务系统做对接，在其它系统不能提供 api 的情况下，直接操作数据库无疑是最快也最直接的方式。
-    - 这种情况，不同业务数据保存在不同的数据库，请求数据的时候，对于从哪个数据库请求数据是明确的，那么最直接的方式就是使用注解，或者配置 biz.service.{shardKeySchema} 对应的服务接口全路径名列表。
-    - 在不需要分表的情况下，用注解和配置 biz.service.{shardKeySchema} 就够了，这种情况下请求数据时，不需要通过 ShardView（[ShardView.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardView.java)）传 shardKeySchema 和 shardKeyTableNumber 参数。
-    - 当然，也可以不用注解也不用配置 biz.service.{shardKeySchema}，还是通过 ShardView 传递参数也行，怎么灵活怎么来。
+    - 这种情况，不同业务数据保存在不同的数据库，请求数据的时候，对于从哪个数据库请求数据是明确的，那么最直接的方式就是使用注解，或者配置 ShardConfig.shardSchemaInterfaceClassNameList。
+    - 在不需要分表的情况下，用注解和配置 ShardConfig.shardSchemaInterfaceClassNameList 就够了，这种情况下请求数据时，不需要通过 ShardRequest（[ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java)）传 shardKeySchema 和 shardKeyTableNumber 参数。
+    - 当然，也可以不用注解也不用配置 ShardConfig.shardSchemaInterfaceClassNameList，还是通过 ShardRequest 传递参数也行，怎么灵活怎么来。
 - 场景三：
     - 分表是确定的，不是动态分配的，那么 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 只传 shardKeyTable 即可。
 
