@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="biz.mapper.original.BizTradeMapper">
+  <resultMap id="BaseResultMap" type="biz.model.entity.BizTrade">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="biz_id" jdbcType="INTEGER" property="bizId" />
+    <result column="tid" jdbcType="BIGINT" property="tid" />
+    <result column="buyer_nick" jdbcType="VARCHAR" property="buyerNick" />
+    <result column="payment" jdbcType="DECIMAL" property="payment" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="pay_time" jdbcType="INTEGER" property="payTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, biz_id, tid, buyer_nick, payment, status, pay_time
+  </sql>
+  <select id="selectByExample" parameterType="biz.model.entity.BizTradeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `biz_trade`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `biz_trade`
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from `biz_trade`
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="biz.model.entity.BizTradeExample">
+    delete from `biz_trade`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="biz.model.entity.BizTrade">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `biz_trade` (biz_id, tid, buyer_nick, 
+      payment, status, pay_time
+      )
+    values (#{bizId,jdbcType=INTEGER}, #{tid,jdbcType=BIGINT}, #{buyerNick,jdbcType=VARCHAR}, 
+      #{payment,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{payTime,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="biz.model.entity.BizTrade">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `biz_trade`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bizId != null">
+        biz_id,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="buyerNick != null">
+        buyer_nick,
+      </if>
+      <if test="payment != null">
+        payment,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bizId != null">
+        #{bizId,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=BIGINT},
+      </if>
+      <if test="buyerNick != null">
+        #{buyerNick,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null">
+        #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="biz.model.entity.BizTradeExample" resultType="java.lang.Long">
+    select count(*) from `biz_trade`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `biz_trade`
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.bizId != null">
+        biz_id = #{record.bizId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tid != null">
+        tid = #{record.tid,jdbcType=BIGINT},
+      </if>
+      <if test="record.buyerNick != null">
+        buyer_nick = #{record.buyerNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payment != null">
+        payment = #{record.payment,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.payTime != null">
+        pay_time = #{record.payTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `biz_trade`
+    set id = #{record.id,jdbcType=BIGINT},
+      biz_id = #{record.bizId,jdbcType=INTEGER},
+      tid = #{record.tid,jdbcType=BIGINT},
+      buyer_nick = #{record.buyerNick,jdbcType=VARCHAR},
+      payment = #{record.payment,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=INTEGER},
+      pay_time = #{record.payTime,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="biz.model.entity.BizTrade">
+    update `biz_trade`
+    <set>
+      <if test="bizId != null">
+        biz_id = #{bizId,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=BIGINT},
+      </if>
+      <if test="buyerNick != null">
+        buyer_nick = #{buyerNick,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null">
+        payment = #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="biz.model.entity.BizTrade">
+    update `biz_trade`
+    set biz_id = #{bizId,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=BIGINT},
+      buyer_nick = #{buyerNick,jdbcType=VARCHAR},
+      payment = #{payment,jdbcType=DECIMAL},
+      status = #{status,jdbcType=INTEGER},
+      pay_time = #{payTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

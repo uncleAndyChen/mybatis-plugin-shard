@@ -20,6 +20,10 @@ function apiPost(method) {
             parameter.id = $("#majorTuitionGradeId").val();
             baseRequest.jsonStringParameter = JSON.stringify(parameter);
             break;
+        case "getBizTradeByBizId":
+            parameter.bizId = $("#bizId").val();
+            baseRequest.jsonStringParameter = JSON.stringify(parameter);
+            break;
     }
 
     $.ajax({

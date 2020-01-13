@@ -236,6 +236,64 @@ public class ShardRequest {
 }
 ```
 
+# 分表测试
+运行起来后，点击【搜索商家订单】
+根据选择的商家ID，后台模拟获取用户的分库分表信息，如下：
+```java
+/**
+ * 注意：这里为了演示，简单的返回用户 bizId 作为分表用的 shardKeyTableNumber，而数据库 key 则假设为 biz
+ * 通过用户 bizId 获取用户分表用的 shardKeyTableNumber
+ * @param bizId 用户 ID
+ * @return shardKeyTableNumber
+ */
+public static UserShardView getShardKeyTableNumberByBizId(int bizId) {
+    // 获取 shardKeyTableNumber 的代码
+    // 可能是从数据库取
+    // 可能是从 Session 取
+    // 如果是 JWT 机制，那么请求过来就能唯一确定用户信息
+    UserShardView userShardView = new UserShardView();
+
+    userShardView.setShardKeySchema("biz");
+    userShardView.setShardKeyTableNumber(bizId);
+
+    return userShardView;
+}
+```
+其中视图 UserShardView 代码如下：
+```java
+package biz.model.view;
+
+import lombok.Data;
+
+@Data
+public class UserShardView {
+    private int shardKeyTableNumber;
+    private String shardKeySchema;
+}
+```
+
+在指定 shardKeySchema 和 shardKeyTableNumber 的情况下，数据库以及分表信息已经足够了，再配合分库分表配置（参见:https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml）
+在选择【商家ID】为 10682 的情况下，打印的分表前后的 sql 语句如下（在原始语句的基本上删除了影响阅读的空行）：
+```
+--------------shard table sql start-------------- 
+current data source key：biz
+before shard table sql：
+--->
+select
+    id, biz_id, tid, buyer_nick, payment, status, pay_time
+    from `biz_trade`
+     WHERE (  biz_id = ? )
+<---
+after shard table sql：
+--->
+select
+    id, biz_id, tid, buyer_nick, payment, status, pay_time
+    from `biz_trade_2`
+     WHERE (  biz_id = ? )
+<---
+--------------shard table sql end  --------------
+```
+
 # 重新生成 mapper 和 entity
 请参考 [生成 Mapper 操作](https://github.com/uncleAndyChen/mybatis-plugin-shard/tree/master/docs)
 

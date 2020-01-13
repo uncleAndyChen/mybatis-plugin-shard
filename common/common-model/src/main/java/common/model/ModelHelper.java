@@ -35,7 +35,7 @@ public class ModelHelper<T> {
         return apiResponse;
     }
 
-    public static ApiResponse getApiResponseByResponseCodeEnumAndMessage(ResponseCodeEnum responseCodeEnum, String message, boolean  isAddMessageToHead) {
+    public static ApiResponse getApiResponseByResponseCodeEnumAndMessage(ResponseCodeEnum responseCodeEnum, String message, boolean isAddMessageToHead) {
         ApiResponse apiResponse = getApiResponseByResponseCodeEnum(responseCodeEnum, null);
 
         if (isAddMessageToHead) {

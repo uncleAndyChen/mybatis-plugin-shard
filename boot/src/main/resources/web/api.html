@@ -8,7 +8,7 @@
 </head>
 <body>
     <h3 align="center">api列表</h3>
-    <form id="formExamConfirmAddAttach" method="POST" enctype="multipart/form-data" action="">
+    <form id="formApiTest" method="POST" action="">
         <table width="80%" align="center">
             <tr>
                 <td>
@@ -31,6 +31,17 @@
                     <a href="javascript:apiPost('getFinMajorTuitionGradeByPrimaryKey');">根据主键搜索年级专业学费标准</a><br/>
                     <hr/>
                     <a href="javascript:apiPost('getSysDeptList');">搜索部门信息</a><br/>
+                    <hr/>
+                    商家ID：
+                    <select id="bizId">
+                        <option value="1">1</option>
+                        <option value="31">31</option>
+                        <option value="10681">10681</option>
+                        <option value="10682">10682</option>
+                        <option value="13883">13883</option>
+                    </select>
+                    <br/>
+                    <a href="javascript:apiPost('getBizTradeByBizId');">搜索商家订单</a><br/>
                     <hr/>
                 </td>
             </tr>

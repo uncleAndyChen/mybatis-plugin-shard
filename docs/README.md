@@ -12,6 +12,7 @@ del/f/s/q biz\biz-model\src\main\java\biz\model\entity\*.*
 java -Dfile.encoding=UTF-8 -cp mbg/mybatis-generator-1.3.7.jar;mbg/mybatis-generator-enhance-mysql-v5.7.x.jar org.mybatis.generator.api.ShellRunner -configfile mbg/generator-config-system.xml -overwrite
 java -Dfile.encoding=UTF-8 -cp mbg/mybatis-generator-1.3.7.jar;mbg/mybatis-generator-enhance-mysql-v5.7.x.jar org.mybatis.generator.api.ShellRunner -configfile mbg/generator-config-student.xml -overwrite
 java -Dfile.encoding=UTF-8 -cp mbg/mybatis-generator-1.3.7.jar;mbg/mybatis-generator-enhance-mysql-v5.7.x.jar org.mybatis.generator.api.ShellRunner -configfile mbg/generator-config-finance.xml -overwrite
+java -Dfile.encoding=UTF-8 -cp mbg/mybatis-generator-1.3.7.jar;mbg/mybatis-generator-enhance-mysql-v5.7.x.jar org.mybatis.generator.api.ShellRunner -configfile mbg/generator-config-biz.xml -overwrite
 ```
 
 # 生成 table 属性、生成 mapper 与 entity

@@ -1,6 +1,9 @@
 package biz.facade.impl;
 
 import biz.facade.facade.IApiAdapterService;
+import biz.model.view.UserShardView;
+import biz.service.UserService;
+import biz.service.facade.IBizTradeService;
 import biz.service.facade.IEduStudentService;
 import biz.service.facade.IFinMajorTuitionGradeService;
 import biz.service.SysDeptService;
@@ -19,6 +22,8 @@ public class ApiAdapterServiceImpl implements IApiAdapterService {
     IFinMajorTuitionGradeService finMajorTuitionGradeService;
     @Autowired
     IEduStudentService eduStudentService;
+    @Autowired
+    IBizTradeService bizTradeService;
 
     @Override
     public ApiResponse getApiResponse(BaseRequest baseRequest, HttpServletRequest request) {
@@ -63,8 +68,27 @@ public class ApiAdapterServiceImpl implements IApiAdapterService {
                 return finMajorTuitionGradeService.getFinMajorTuitionGradeByPrimaryKey(baseRequest);
             case "getSysDeptList":
                 return SysDeptService.getSysDeptList();
+            case "getBizTradeByBizId":
+                return getBizTrade(baseRequest);
             default:
                 return ModelHelper.getApiResponseByResponseCodeEnum(ResponseCodeEnum.noSuchMethodException);
         }
+    }
+
+    private ApiResponse getBizTrade(BaseRequest baseRequest) {
+        ApiResponse checkUserResult = UserService.getCheckUserResult(baseRequest);
+
+        if (checkUserResult != null) {
+            return checkUserResult;
+        }
+
+        // 获取用户分库分表信息
+        UserShardView userShardView = UserService
+                .getShardKeyTableNumberByBizId(baseRequest.getJsonNodeParameter().get("bizId").asInt());
+
+        baseRequest.setShardKeySchema(userShardView.getShardKeySchema());
+        baseRequest.setShardKeyTableNumber(userShardView.getShardKeyTableNumber());
+
+        return bizTradeService.getBizTradeByBizId(baseRequest);
     }
 }

@@ -73,10 +73,10 @@ public class ShardTablePolicy {
             sb.append("\n--------------shard table sql start-------------- \n")
                     .append("current data source key：")
                     .append(HandleDataSource.getSchemaKey())
-                    .append("\nbefore shard table  sql：\n--->\n")
+                    .append("\nbefore shard table sql：\n--->\n")
                     .append(originalSql)
                     .append("\n<---\n")
-                    .append("after shard table  sql：\n--->\n")
+                    .append("after shard table sql：\n--->\n")
                     .append(convertedSql)
                     .append("\n<---")
                     .append("\n--------------shard table sql end  --------------\n");

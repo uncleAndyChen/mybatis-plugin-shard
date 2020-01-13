@@ -8,6 +8,8 @@ public enum ResponseCodeEnum {
     success(1, "成功"),
     unknownException(-20, "系统异常"),
     noSuchMethodException(-30, "调用了不存在的方法，请联系管理员。"),
+    noNecessaryParameter(-40, "缺少必要参数【%s】"),
+    parameterIntError(-50, "参数【%s】请传大于0的整数"),
     ;
 
     private int index;
