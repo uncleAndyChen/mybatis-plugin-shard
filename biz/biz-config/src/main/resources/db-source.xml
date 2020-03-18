@@ -166,7 +166,8 @@
         </property>
         <!-- 分表策略
             直接将 ShardRequest.shardKeyTable（优先级高于后者） 或 ShardRequest.shardKeyTableNumber 作为分表后缀的表。
-             ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+            需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
+            ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
          -->
         <property name="shardTableDirectlyList">
             <list>
