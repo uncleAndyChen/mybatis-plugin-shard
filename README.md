@@ -29,12 +29,13 @@
         - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
 
 # 动态切换数据源的三种方式
-- 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
-    - 可以根据具体业务场景决定要连接哪个数据源。
-- 注解：可用在类和方法上，方法注解优先于类注解。
-- biz service 配置
+- 一：通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
+    - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
+- 二：注解。可用在类和方法上，方法注解优先于类注解。优先级第二。
+    - 优点：在同一个类里可以灵活的连接多个数据源，如果没有这种业务需求，则建议用第三种。
+- 三：biz service 配置，优先级最低。
     - 以上两种方式均没有的情况下，会读取 ShardConfig.shardSchemaInterfaceClassNameList 配置信息，在运行过程中，通过 AOP 拦截 biz.service.impl，从而识别应该使用哪个数据源，达到分库（多数据源管理）的目的。
-    - 这种方式的优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
+    - 优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
     - 可参考本项目的配置项：`biz\biz-config\src\main\resources\db-source.xml` 的 `<property name="shardSchemaInterfaceClassNameList">`。
 
 如果以上三种方式都没有找到数据源，则使用默认的数据源。
