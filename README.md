@@ -33,8 +33,9 @@
     - 可以根据具体业务场景决定要连接哪个数据源。
 - 注解：可用在类和方法上，方法注解优先于类注解。
 - biz service 配置
-    - 以上两种方式均没有的情况下，会读取 ShardConfig.shardSchemaInterfaceClassNameList 配置信息，在运行过程中，通过 AOP 拦截 biz.service，从而识别应该使用哪个数据源，达到分库/多数据源动态切换的目的。
+    - 以上两种方式均没有的情况下，会读取 ShardConfig.shardSchemaInterfaceClassNameList 配置信息，在运行过程中，通过 AOP 拦截 biz.service.impl，从而识别应该使用哪个数据源，达到分库（多数据源管理）的目的。
     - 这种方式的优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
+    - 可参考本项目的配置项：`biz\biz-config\src\main\resources\db-source.xml` 的 `<property name="shardSchemaInterfaceClassNameList">`。
 
 如果以上三种方式都没有找到数据源，则使用默认的数据源。
 
