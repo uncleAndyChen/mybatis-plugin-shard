@@ -128,7 +128,7 @@
 
     <bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">
         <property name="defaultTargetDataSource" ref="dataSourceSystem"/>
-        <!-- 下面的各个 0key 需要配置到 shardTableConfigView 的 schemaKeyList -->
+        <!-- 下面的各个 key 需要配置到 ShardConfig 的 schemaKeyList，见下面的：<bean id="shardConfig" class="mis.api.common.shard.shard.ShardConfig" > -->
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="system" value-ref="dataSourceSystem"/>
