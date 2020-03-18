@@ -152,6 +152,7 @@ mvn install
     </property>
     <!-- 分表策略
         通过两个数相除取余作为后缀的表，配合 ShardRequest.shardKeyTableNumber 使用
+        需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
         ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
     -->
     <!-- key 将作为 shardKeyTableNumber 的除数（取余）， 余数作为分表后缀-->
