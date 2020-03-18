@@ -28,7 +28,7 @@
     - 底层实现：基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行。
         - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
 
-# 动态切换数据源的三种方式
+# 指定数据源的三种方式
 1. 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
     - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
 1. 注解。可用在类和方法上，方法注解优先于类注解。优先级第二。
@@ -38,7 +38,13 @@
     - 优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
     - 可参考本项目的配置项：`biz\biz-config\src\main\resources\db-source.xml` 的 `<property name="shardSchemaInterfaceClassNameList">`。
 
-如果以上三种方式都没有找到数据源，则使用默认数据源。建议将使用频率较低的数据库指定为默认数据源。
+# 最侍实践？
+- 如果以上三种方式都没有找到数据源，或者 service 类在拦截器规则之外，则使用默认数据源，所以，对于非默认数据库的操作，一定要通过以上三种方式之一来指定数据源，并且一定要符合 `biz\biz-config\src\main\resources\db-source.xml` 定义的拦截规则，该规则一定是基于接口编程的。
+- 对于默认数据库的操作，可以不基于接口编程，这个需要根据项目的实际情况灵活制定，本项目的 SysDeptService、UserService 没有基于接口编程，这里只是**示例，并不一定是最佳实践（并不一定适合你的项目）**。
+
+# 在不需要分库分表插件的情况下的数据源
+- service 类（如SysDeptService），在拦截器规则之外的情况下，分库分表插件没有工作，那么，最终是如何采用默认数据源的呢？通过跟踪源码，找到实现代码为 `org.springframework.jdbc.datasource.lookup.determineTargetDataSource`，如下：
+![](https://www.lovesofttech.com/img/java/mybatis-shard-default-data-source.png)
 
 # 分库分表思路
 - 分库思路：
@@ -144,7 +150,8 @@ mvn install
     </property>
     <!-- 分表策略
         直接将 ShardRequest.shardKeyTable（优先级高于后者） 或 ShardRequest.shardKeyTableNumber 作为分表后缀的表。
-         ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+        需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
+        ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
      -->
     <property name="shardTableDirectlyList">
         <list>
@@ -154,7 +161,6 @@ mvn install
     </property>
     <!-- 分表策略
         通过两个数相除取余作为后缀的表，配合 ShardRequest.shardKeyTableNumber 使用
-        需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
         ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
     -->
     <!-- key 将作为 shardKeyTableNumber 的除数（取余）， 余数作为分表后缀-->
