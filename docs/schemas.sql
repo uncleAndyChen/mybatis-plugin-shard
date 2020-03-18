@@ -76,6 +76,8 @@ INSERT INTO `sys_dept` (`name`, `parent_id`, `level`, `sequence`, `status`, `rem
 
 use shard_student;
 drop table if exists edu_student;
+drop table if exists edu_student_2;
+drop table if exists edu_student_3;
 
 /*==============================================================*/
 /* Table: edu_student                                           */
@@ -203,7 +205,7 @@ update edu_student set id_number=CONCAT('5221282008110360', id) where id < 100;
 update edu_student set id_number=CONCAT('522128200811036', id) where id > 99;
 update edu_student set id_number=CONCAT('52212820081103600', id) where id < 10;
 
-create table edu_student_2 as select * from edu_studen where id between 20 and 39;
+create table edu_student_2 as select * from edu_student where id between 20 and 39;
 create table edu_student_3 as select * from edu_student where id > 39;
 delete from edu_student where id > 19;
 
