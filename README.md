@@ -28,6 +28,41 @@
     - 底层实现：基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行。
         - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
 
+
+# 分库（多数据源管理）实现方式
+spring 框架获取数据源是在 `org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource.determineTargetDataSource` 方法中定义的：
+```java
+protected DataSource determineTargetDataSource() {
+    Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
+    Object lookupKey = determineCurrentLookupKey();
+    DataSource dataSource = this.resolvedDataSources.get(lookupKey);
+    if (dataSource == null && (this.lenientFallback || lookupKey == null)) {
+        dataSource = this.resolvedDefaultDataSource;
+    }
+    if (dataSource == null) {
+        throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
+    }
+    return dataSource;
+}
+```
+- 该方法首先通过 determineCurrentLookupKey() 来获得数据源的 key 值 lookupKey，在本项目中，如果 lookupKey 为 null，那么获取到的 dataSource 肯定也是为 null 的，这时就去取默认数据源。
+- 查看 determineCurrentLookupKey() 的定义：`protected abstract Object determineCurrentLookupKey();`，是一个抽象方法，如果我们自己来实现这个方法，那么就可以在每次操作数据库之前设置好数据源。本项目重写该方法的类是：ChooseDataSource
+```
+public class ChooseDataSource extends AbstractRoutingDataSource {
+    @Override
+    protected Object determineCurrentLookupKey() {
+        return HandleDataSource.getSchemaKey();
+    }
+}
+```
+- ChooseDataSource 类继续自 AbstractRoutingDataSource，重写了 determineCurrentLookupKey() 方法，这就是实现拦截器的关键所在，符合拦截器规则的每次请求，拦截器通过设置 lookupKey 来动态设置数据源，从而达到分库（多数据管理）的目的。
+- ChooseDataSource 定义好了，如何使用呢？请看文件 `db-source.xml` 中配置的 dataSource：`<bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">`
+- ChooseDataSource 类中用到的 HandleDataSource() 是为分库分表插件的拦截器准备的，在此就不一一展开了，如果想了解详情，请下载源码 debug 起来，打个断点、跟踪，一切尽收眼底~~
+
+# service 类在拦截器规则之外的数据源
+- service 类（如SysDeptService），在拦截器规则之外的情况下，分库分表插件没有工作，会使用默认数据源，如下：
+![](https://www.lovesofttech.com/img/java/mybatis-shard-default-data-source.png)
+
 # 指定数据源的三种方式
 1. 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
     - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
@@ -38,14 +73,11 @@
     - 优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
     - 可参考本项目的配置项：`biz\biz-config\src\main\resources\db-source.xml` 的 `<property name="shardSchemaInterfaceClassNameList">`。
 
-# 最佳实践
+# 最佳实践--基于接口编程
 - 如果以上三种方式都没有找到数据源，或者 service 类在拦截器规则之外，则使用默认数据源，所以，对于非默认数据库的操作，一定要通过以上三种方式之一来指定数据源，并且一定要符合 `biz\biz-config\src\main\resources\db-source.xml` 定义的拦截规则，该规则一定是基于接口编程的。
-- 对于默认数据库的操作，可以不基于接口编程。是否要基于接口编程，这个需要根据项目的实际情况灵活制定，本项目的 SysDeptService、UserService 没有基于接口编程，这里只是**示例，并不一定是最佳实践（可能不适合你的项目）**。
-- **真实项目建议统一基于接口编程**，方便将来扩展，也不用给团队成员解释为什么有的基于接口，而有的没有，解释了也有可能有人在该用接口时不用。
-
-# service 类在拦截器规则之外的数据源
-- service 类（如SysDeptService），在拦截器规则之外的情况下，分库分表插件没有工作，会使用默认数据源，通过跟踪源码，找到 `org.springframework.jdbc.datasource.lookup.determineTargetDataSource`，如下：
-![](https://www.lovesofttech.com/img/java/mybatis-shard-default-data-source.png)
+- 对于默认数据库的操作，可以不基于接口编程。
+- 是否要基于接口编程，这个需要根据项目的实际情况灵活制定，本项目的 SysDeptService、UserService 没有基于接口编程，这里只是**示例，并不一定是最佳实践（可能不适合你的项目）**。
+- **真实项目建议统一基于接口编程**，先不说这是大师们推荐的方式，也是很多成功开源项目采用的方式，这里不说长篇大论，这里只说一下实际体会：统一基于接口编程，方便将来扩展，也不用给团队成员解释为什么有的基于接口，而有的没有，解释了可能也有人理解不好，而且，可怕的是，可能有团队成员在该用接口时不用，遇到问题了来问你怎么回事儿。总之，统一好规则，可以避免好多坑。
 
 # 分库分表思路
 - 分库思路：
