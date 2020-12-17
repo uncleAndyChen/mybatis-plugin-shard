@@ -55,7 +55,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
     }
 }
 ```
-- ChooseDataSource 类继续自 AbstractRoutingDataSource，重写了 determineCurrentLookupKey() 方法，这就是实现拦截器的关键所在，符合拦截器规则的每次请求，拦截器通过设置 lookupKey 来动态设置数据源，从而达到分库（多数据管理）的目的。
+- ChooseDataSource 类继承自 AbstractRoutingDataSource，重写了 determineCurrentLookupKey() 方法，这就是实现拦截器的关键所在，符合拦截器规则的每次请求，拦截器通过设置 lookupKey 来动态设置数据源，从而达到分库（多数据管理）的目的。
 - ChooseDataSource 定义好了，如何使用呢？请看文件 `db-source.xml` 中配置的 dataSource：`<bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">`
 - ChooseDataSource 类中用到的 HandleDataSource() 是为分库分表插件的拦截器准备的，在此就不一一展开了，如果想了解详情，请下载源码 debug 起来，打个断点、跟踪，一切尽收眼底~~
 
@@ -68,6 +68,16 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
     - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
 1. 注解。可用在类和方法上，方法注解优先于类注解。优先级第二。
     - 优点：在同一个类里可以灵活的连接多个数据源，如果没有这种业务需求，则建议用第三种。
+    - 注解类：TargetDataSource
+    - 如：
+      ```java      
+           @Override
+           @TargetDataSource(schemaKey = "student")
+           public ApiResponse getEduStudentByIdNumberOrPhone(BaseRequest baseRequest) {
+               StudentSearchRequest studentSearchRequest = JsonHelper.jsonStringToPojo(baseRequest.getJsonStringParameter(), StudentSearchRequest.class);
+               return new ApiResponse<>(EduStudentDalService.getEduStudentByIdNumberOrPhone(studentSearchRequest));
+           }
+      ```
 1. biz service 配置，优先级最低。
     - 以上两种方式均没有的情况下，会读取 ShardConfig.shardSchemaInterfaceClassNameList 配置信息，在运行过程中，通过 AOP 拦截 biz.service.impl，从而识别应该使用哪个数据源，达到分库（多数据源管理）的目的。
     - 优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
