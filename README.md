@@ -1,25 +1,21 @@
-# mybatis-plugin-shard
+# 分库分表轻量级方案：基于spring 切面（AOP）+ MyBatis 插件
+## mybatis-plugin-shard
 - 基于spring 切面（AOP）实现动态多数据源切换。
 - 基于 MyBatis 插件方式实现动态分表策略。
 - 来源于多个已上线项目实践。
 - 本项目有完整的测试示例。
 
-# todo
-- [x] 将分库分表配置与数据源配置统一放到文件 db-source.xml（biz\biz-config\src\main\resources\db-source.xml），并作为配置的切面的参数，在整个分库分表过程都可访问。
-- [x] 完善分表逻辑，比起之前将分库分表配置在两个文件中更加优雅，也更加灵活，扩展性越好。
-- [x] 完善文档
-
-# 项目地址
+## 项目地址
 - github: [https://github.com/uncleAndyChen/mybatis-plugin-shard](https://github.com/uncleAndyChen/mybatis-plugin-shard)
 - gitee: &nbsp;&nbsp;[https://gitee.com/uncleAndyChen/mybatis-plugin-shard](https://gitee.com/uncleAndyChen/mybatis-plugin-shard)
 
-# 配套 MBG 增强插件
+## 配套 MBG 增强插件
 查看 MBG 增强插件请移步：[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)
 - 用该 MBG 增强插件生成的 {xxx}Mapper.xml，会把表名用[\`]（不包括中括号）引起来，这样做的目的是分表时，动态给表名添加后缀后替换原始表名时不会“添乱”。
 - 注意 [\`] 并非单引号，是在ESC 键下面、Q 键左上角的数字键 1 的左边那个键对应的“单引号”。
 - 比如有两张表：biz_trade、biz_trade_order，现在需要动态将 biz_trade 替换成 biz_trade_9，如果表名前后没有[\`]，则 biz_trade_order 也会被替换，替换后为：biz_trade_9_order，这显然不是我们希望发生的。
 
-# 功能概述
+## 功能概述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
 - 分表：对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能。
     - 适用数据量增加迅速的业务场景。
@@ -27,7 +23,7 @@
         - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
 
 
-# 分库（多数据源管理）实现方式
+## 分库（多数据源管理）实现方式
 spring 框架获取数据源是在 `org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource.determineTargetDataSource` 方法中定义的：
 ```java
 protected DataSource determineTargetDataSource() {
@@ -57,11 +53,11 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 - ChooseDataSource 定义好了，如何使用呢？请看文件 `db-source.xml` 中配置的 dataSource：`<bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">`
 - ChooseDataSource 类中用到的 HandleDataSource() 是为分库分表插件的拦截器准备的，在此就不一一展开了，如果想了解详情，请下载源码 debug 起来，打个断点、跟踪，一切尽收眼底~~
 
-# service 类在拦截器规则之外的数据源
+## service 类在拦截器规则之外的数据源
 - service 类（如SysDeptService），在拦截器规则之外的情况下，分库分表插件没有工作，会使用默认数据源，如下：
 ![](/img/mybatis-shard-default-data-source.png)
 
-# 指定数据源的三种方式
+## 指定数据源的三种方式
 1. 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
     - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
 1. 注解。可用在类和方法上，方法注解优先于类注解。优先级第二。
@@ -81,13 +77,13 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
     - 优点：可以由专人统一管理，同时生产环境与开发、测试环境可以用不同的配置信息，开发人员与测试人员不用关注分库的细节。
     - 可参考本项目的配置项：`biz\biz-config\src\main\resources\db-source.xml` 的 `<property name="shardSchemaInterfaceClassNameList">`。
 
-# 最佳实践--基于接口编程
+## 最佳实践--基于接口编程
 - 如果以上三种方式都没有找到数据源，或者 service 类在拦截器规则之外，则使用默认数据源，所以，对于非默认数据库的操作，一定要通过以上三种方式之一来指定数据源，并且一定要符合 `biz\biz-config\src\main\resources\db-source.xml` 定义的拦截规则，该规则一定是基于接口编程的。
 - 对于默认数据库的操作，可以不基于接口编程。
 - 是否要基于接口编程，这个需要根据项目的实际情况灵活制定，本项目的 SysDeptService、UserService 没有基于接口编程，这里只是**示例，并不一定是最佳实践（可能不适合你的项目）**。
 - **真实项目建议统一基于接口编程**，先不说这是大师们推荐的方式，也是很多成功开源项目采用的方式，这里不说长篇大论，这里只说一下实际体会：统一基于接口编程，方便将来扩展，也不用给团队成员解释为什么有的基于接口，而有的没有，解释了可能也有人理解不好，而且，可怕的是，可能有团队成员在该用接口时不用，遇到问题了来问你怎么回事儿。总之，统一好规则，可以避免好多坑。
 
-# 分库分表思路
+## 分库分表思路
 - 分库思路：
     - 每个库有一个唯一的标志，起名叫 shardKeySchema，每个数据库的 shardKeySchema 与 [db-source.xml](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml) 定义的数据源 dataSource -> targetDataSources -> map -> key 一一对应。
     - 用户在初始化时根据业务规则分配到某一个库，将该库的 shardKeySchema 保存到用户表。
@@ -98,7 +94,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 - 业务操作请求：
     - 在请求数据时，就可以根据 shardKeySchema 动态切换数据源，根据 shardKeyTableNumber 决定查哪张表了（分表操作通过 MyBatis 插件实现）。
 
-# 分表分库场景
+## 分表分库场景
 - 场景一：
     - SaaS 平台，用户量成千上万，交易表 biz_trade 每天100万级增长，如果只用一个库的一张表，写入和读取压力会非常大，会成为瓶颈，所以需要分库分表。
     - 请求数据时，需要通过 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 传 shardKeySchema 和 shardKeyTableNumber 参数。
@@ -119,7 +115,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 - 场景三：
     - 分表是确定的，不是动态分配的，那么 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 只传 shardKeyTable 即可。
 
-# 运行
+## 运行
 - `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
 - 因为依赖统一管理，添加了一个父模块：dependencies，只有一个 pom.xml 文件，需要先把这个 model 安装到本地仓库，否则会去 maven 配置的仓库下载。打开 cmd 窗口，在项目根目录下操作：
 ```
@@ -146,7 +142,7 @@ mvn install
 - 访问：`http://localhost:81`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
 ![](/img/mybatis-shard-api-test.png)
 
-# 数据源配置（部分）
+## 数据源配置（部分）
 ```xml
 <bean id="dataSource" class="common.aspect.ChooseDataSource" primary="true">
     <property name="defaultTargetDataSource" ref="dataSourceSystem"/>
@@ -162,7 +158,7 @@ mvn install
 </bean>
 ```
 
-# 配置分表分库配置类
+## 配置分表分库配置类
 ```xml
 <!-- 以下配置，部分表名只是用于配置示例，仅为了更好的展示如何配置。
     本项目没有用到的表名有：edu_class、biz_trade_order、biz_item、biz_item_sku
@@ -233,7 +229,7 @@ mvn install
 </bean>
 ```
 
-# 切面配置
+## 切面配置
 ```xml
 <!-- 用于切面，实现拦截数据库操作，实现分库分表的类 -->
 <bean id="dataSourceAspect" class="common.aspect.DataSourceAspect">
@@ -250,7 +246,7 @@ mvn install
 </aop:config>
 ```
 
-# 请求参数 ShardRequest.java 类
+## 请求参数 ShardRequest.java 类
 ```java
 public class ShardRequest {
     /**
@@ -286,7 +282,7 @@ public class ShardRequest {
 }
 ```
 
-# 分表测试
+## 分表测试
 运行起来后，点击【搜索商家订单】
 根据选择的商家ID，后台模拟获取用户的分库分表信息，如下：
 ```java
@@ -344,10 +340,10 @@ select
 --------------shard table sql end  --------------
 ```
 
-# 重新生成 mapper 和 entity
+## 重新生成 mapper 和 entity
 请参考 [生成 Mapper 操作](https://github.com/uncleAndyChen/mybatis-plugin-shard/tree/master/docs)
 
-# 有关 {xxx}Mapper.xml 文件
+## 有关 {xxx}Mapper.xml 文件
 我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，包名为：`biz.mapper.xml.original` 和 `biz.mapper.xml.extend`
 
 默认情况下，xml 文件不会被打包，所以，运行的时候会出现类似这样的错误：
@@ -371,7 +367,7 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
 ```
 > directory 配置到 xml 的父目录 `src/main/java/biz/mapper/xml` 不会生效，配置成 `src/main/java` 就好。
 
-# 技术清单
+## 技术清单
 - JDK 1.8，理论上支持 1.8 以上的版本，如需升级，比如要改为 JDK 11，将文件 `./dependencies/pom.xml` 中 `<java.version>1.8</java.version>` 改为 `<java.version>11</java.version>`
 - MySQL 5.6.46、MySQL 5.7，用这两个版本作的测试，理论上支持 5.6 及以上版本。
 - maven 依赖库
@@ -384,9 +380,14 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
         - lombok 1.18.10
         - jackson 2.10.1
 
-# 支持
+## todo
+- [x] 将分库分表配置与数据源配置统一放到文件 db-source.xml（biz\biz-config\src\main\resources\db-source.xml），并作为配置的切面的参数，在整个分库分表过程都可访问。
+- [x] 完善分表逻辑，比起之前将分库分表配置在两个文件中更加优雅，也更加灵活，扩展性越好。
+- [x] 完善文档。
+- 
+## 支持
 如果有疑问或建议，欢迎请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)。
 可能不会立即回复，尤其上班时间，不过我会尽量抽业余时间回复的。
 
-# 如果帮到了你
+## 如果帮到了你
 请 Star 一下，让我有动力继续完善和优化。
