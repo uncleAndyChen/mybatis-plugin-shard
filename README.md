@@ -59,7 +59,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 
 # service 类在拦截器规则之外的数据源
 - service 类（如SysDeptService），在拦截器规则之外的情况下，分库分表插件没有工作，会使用默认数据源，如下：
-![](https://www.lovesofttech.com/img/java/mybatis-shard-default-data-source.png)
+![](/img/mybatis-shard-default-data-source.png)
 
 # 指定数据源的三种方式
 1. 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
@@ -144,7 +144,7 @@ mvn install
 - 修改 `biz/biz-config/src/main/resources/jdbc.properties` 中连接数据库的参数
 - 启动
 - 访问：`http://localhost:81`，可以测试以三种不同方式切换数据源来查询数据。具体细节请看源代码，以后会出详细的文档，敬请期待。
-![](https://www.lovesofttech.com/img/java/mybatis-shard-api-test.png)
+![](/img/mybatis-shard-api-test.png)
 
 # 数据源配置（部分）
 ```xml
