@@ -4,24 +4,27 @@
 1. 分库：基于spring 切面（AOP）实现动态多数据源切换
 1. 分表：基于 MyBatis 插件方式实现动态分表策略
 1. 来源于多个已上线项目实践
-1. 本项目有完整的测试示例
+1. 完整的测试示例
 
 ## 项目地址
 - github: [https://github.com/uncleAndyChen/mybatis-plugin-shard](https://github.com/uncleAndyChen/mybatis-plugin-shard)
 - gitee: &nbsp;&nbsp;[https://gitee.com/uncleAndyChen/mybatis-plugin-shard](https://gitee.com/uncleAndyChen/mybatis-plugin-shard)
 
 ## 配套 MBG 增强插件
-查看 MBG 增强插件请移步：[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)
+- 查看 MBG 增强插件请移步：
+    - [github -> mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)
+    - [giee -> mybatis-generator](https://gitee.com/uncleAndyChen/mybatis-generator)
 - 用该 MBG 增强插件生成的 {xxx}Mapper.xml，会把表名用[\`]（不包括中括号）引起来，这样做的目的是分表时，动态给表名添加后缀后替换原始表名时不会“添乱”。
 - 注意 [\`] 并非单引号，是在ESC 键下面、Q 键左上角的数字键 1 的左边那个键对应的“单引号”。
 - 比如有两张表：biz_trade、biz_trade_order，现在需要动态将 biz_trade 替换成 biz_trade_9，如果表名前后没有[\`]，则 biz_trade_order 也会被替换，替换后为：biz_trade_9_order，这显然不是我们希望发生的。
 
 ## 功能概述
-- 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）。
-- 分表：对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能。
-    - 适用数据量增加迅速的业务场景。
-    - 底层实现：基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行。
-        - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model。
+- 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）
+- 分表：对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能
+    - 适用数据量增加迅速的业务场景
+    - 底层实现：
+      - 基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行
+      - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model
 
 
 ## 分库（多数据源管理）实现方式
@@ -382,13 +385,13 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
         - jackson 2.10.1
 
 ## todo
-- [x] 将分库分表配置与数据源配置统一放到文件 db-source.xml（biz\biz-config\src\main\resources\db-source.xml），并作为配置的切面的参数，在整个分库分表过程都可访问。
-- [x] 完善分表逻辑，比起之前将分库分表配置在两个文件中更加优雅，也更加灵活，扩展性越好。
-- [x] 完善文档。
-- 
+- [x] 将分库分表配置与数据源配置统一放到文件 db-source.xml（biz\biz-config\src\main\resources\db-source.xml），并作为配置的切面的参数，在整个分库分表过程都可访问
+- [x] 完善分表逻辑，比起之前将分库分表配置在两个文件中更加优雅，也更加灵活，扩展性越好
+- [x] 完善文档
+ 
 ## 支持
-如果有疑问或建议，欢迎请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)。
-可能不会立即回复，尤其上班时间，不过我会尽量抽业余时间回复的。
+- 如果有疑问或建议，欢迎请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)
+- 可能不会立即回复，尤其上班时间，不过我会尽量抽业余时间回复的
 
 ## 如果帮到了你
-请 Star 一下，让我有动力继续完善和优化。
+请 Star 一下，让我有动力继续完善和优化
