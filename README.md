@@ -21,10 +21,11 @@
 ## 功能概述
 - 分库：简单的分库功能，更确切的讲，是多数据源管理，可根据业务动态切换，基于切面（AOP）
 - 分表：对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能
-- 底层实现：
-    - 基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行
-    - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model
-- 适用数据量增加迅速的业务场景
+    - 对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能
+    - 底层实现：
+        - 基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行
+        - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator)）生成 Mapper 和 entity model
+    - 适用数据量增加迅速的业务场景
 
 ## 分库（多数据源管理）实现方式
 spring 框架获取数据源是在 `org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource.determineTargetDataSource` 方法中定义的：
