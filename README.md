@@ -1,4 +1,6 @@
-# 分库分表轻量级方案：基于spring 切面（AOP）+ MyBatis 插件
+# 分库分表轻量级方案
+基于spring 切面（AOP）+ MyBatis 插件
+
 ## mybatis-plugin-shard
 - 基于spring 切面（AOP）实现动态多数据源切换。
 - 基于 MyBatis 插件方式实现动态分表策略。
