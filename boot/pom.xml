@@ -6,7 +6,7 @@
         <groupId>com.lovesofttech</groupId>
         <artifactId>dependencies</artifactId>
         <version>1.0.0</version>
-        <relativePath>../../dependencies</relativePath>
+        <relativePath>../dependencies</relativePath>
     </parent>
     <artifactId>boot</artifactId>
     <version>1.0</version>
