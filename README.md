@@ -62,7 +62,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 ![](/img/mybatis-shard-default-data-source.png)
 
 ## 指定数据源的三种方式
-1. 通过参数 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
+1. 通过参数 [ShardRequest.java](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 指定：优先级最高，也最灵活。
     - 优点：可以根据具体业务场景决定要连接哪个数据源，可以在满足某种特定条件下动态设置，运行时决定。
 1. 注解。可用在类和方法上，方法注解优先于类注解。优先级第二。
     - 优点：在同一个类里可以灵活的连接多个数据源，如果没有这种业务需求，则建议用第三种。
@@ -89,7 +89,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 
 ## 分库分表思路
 - 分库思路：
-    - 每个库有一个唯一的标志，起名叫 shardKeySchema，每个数据库的 shardKeySchema 与 [db-source.xml](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml) 定义的数据源 dataSource -> targetDataSources -> map -> key 一一对应。
+    - 每个库有一个唯一的标志，起名叫 shardKeySchema，每个数据库的 shardKeySchema 与 [db-source.xml](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml) 定义的数据源 dataSource -> targetDataSources -> map -> key 一一对应。
     - 用户在初始化时根据业务规则分配到某一个库，将该库的 shardKeySchema 保存到用户表。
 - 分表思路：
     - 每个用户分配一个用于分表的数字编号 shardKeyTableNumber，同样保存到用户表。
@@ -101,7 +101,7 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 ## 分表分库场景
 - 场景一：
     - SaaS 平台，用户量成千上万，交易表 biz_trade 每天100万级增长，如果只用一个库的一张表，写入和读取压力会非常大，会成为瓶颈，所以需要分库分表。
-    - 请求数据时，需要通过 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 传 shardKeySchema 和 shardKeyTableNumber 参数。
+    - 请求数据时，需要通过 [ShardRequest.java](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 传 shardKeySchema 和 shardKeyTableNumber 参数。
     - 业务场景之：平均分配
         - 每个数据库实例最多分配 10 万用户，超过 10 万的用户，再分配到新库。
         - 交易记录平均分到 10 张表，这就意味着用于分表的 shardKeyTableNumber，一个数字编号最多同时分配给一万个用户。
@@ -114,13 +114,13 @@ public class ChooseDataSource extends AbstractRoutingDataSource {
 - 场景二：
     - 不同于场景一，在某一些业务场景，需要与其它业务系统做对接，在其它系统不能提供 api 的情况下，直接操作数据库无疑是最快也最直接的方式。
     - 这种情况，不同业务数据保存在不同的数据库，请求数据的时候，对于从哪个数据库请求数据是明确的，那么最直接的方式就是使用注解，或者配置 ShardConfig.shardSchemaInterfaceClassNameList。
-    - 在不需要分表的情况下，用注解和配置 ShardConfig.shardSchemaInterfaceClassNameList 就够了，这种情况下请求数据时，不需要通过 ShardRequest（[ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java)）传 shardKeySchema 和 shardKeyTableNumber 参数。
+    - 在不需要分表的情况下，用注解和配置 ShardConfig.shardSchemaInterfaceClassNameList 就够了，这种情况下请求数据时，不需要通过 ShardRequest（[ShardRequest.java](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java)）传 shardKeySchema 和 shardKeyTableNumber 参数。
     - 当然，也可以不用注解也不用配置 ShardConfig.shardSchemaInterfaceClassNameList，还是通过 ShardRequest 传递参数也行，怎么灵活怎么来。
 - 场景三：
-    - 分表是确定的，不是动态分配的，那么 [ShardRequest.java](https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 只传 shardKeyTable 即可。
+    - 分表是确定的，不是动态分配的，那么 [ShardRequest.java](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java) 只传 shardKeyTable 即可。
 
 ## 运行
-- `git clone https://github.com/uncleAndyChen/mybatis-plugin-shard.git`
+- `git clone https://gitee.com/uncleAndyChen/mybatis-plugin-shard.git`
 - 因为依赖统一管理，添加了一个父模块：dependencies，只有一个 pom.xml 文件，需要先把这个 model 安装到本地仓库，否则会去 maven 配置的仓库下载。打开 cmd 窗口，在项目根目录下操作：
 ```
 cd dependencies
@@ -192,7 +192,7 @@ mvn install
     <!-- 分表策略
         直接将 ShardRequest.shardKeyTable（优先级高于后者） 或 ShardRequest.shardKeyTableNumber 作为分表后缀的表。
         需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
-        ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+        ShardRequest 参见：https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
      -->
     <property name="shardTableDirectlyList">
         <list>
@@ -202,7 +202,7 @@ mvn install
     </property>
     <!-- 分表策略
         通过两个数相除取余作为后缀的表，配合 ShardRequest.shardKeyTableNumber 使用
-        ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+        ShardRequest 参见：https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
     -->
     <!-- key 将作为 shardKeyTableNumber 的除数（取余）， 余数作为分表后缀-->
     <!-- shardKeyTableNumber 通过 ShardRequest 传递，在请求 api 时传递 -->
@@ -256,7 +256,7 @@ public class ShardRequest {
     /**
      * 分库标志 key，是定义数据源时指定的 key，在执行数据库操作之前，通过该 key 动态切换数据源。
      * 如果只是分库，除了用到个属性，还可利用 ShardTableConfig.shardSchemaInterfaceNameList 实现。
-     *      有关这两项配置的详细信息，请参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
+     *      有关这两项配置的详细信息，请参见：https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
      */
     private String shardKeySchema;
 
@@ -265,7 +265,7 @@ public class ShardRequest {
      *      举例：应用该规则的原始表名为 table_name，则对应的分表为：table_name_key
      * 需要配合 ShardTableConfig 使用，与该类位于同一个目录，在 db-source.xml 中配置各属性值
      *     应用该规则的原始表名:ShardTableConfig.shardTableDirectlyList
-     *          详细描述，请参见:https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
+     *          详细描述，请参见:https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
      */
     private String shardKeyTable;
 
@@ -273,7 +273,7 @@ public class ShardRequest {
      * 动态分表参数编号，整形，一般与用户绑定，针对需要除一个数得到后缀的表
      * 需要配合 ShardTableConfig 使用，与该类位于同一个目录，在 db-source.xml 中配置各属性值
      *     应用该规则的原始表名:ShardTableConfig.shardTableDivideList
-     *          详细描述，请参见:https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
+     *          详细描述，请参见:https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
      *
      * 场景：SaaS 平台，每个用户分配一个编码值，可以按一定规则平均分配，比如现有有10万个用户，我们打算分10张表，那么，平均分配的话，就意味着每一万个用户有一个分表编号。
      * 极端地，对于 SasS 的超级 VIP 用户，可以分配一个唯一的分表编号，这就意味着这个 VIP 用户独享一套表。
@@ -322,7 +322,7 @@ public class UserShardView {
 }
 ```
 
-在指定 shardKeySchema 和 shardKeyTableNumber 的情况下，数据库以及分表信息已经足够了，再配合分库分表配置（参见:https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml）
+在指定 shardKeySchema 和 shardKeyTableNumber 的情况下，数据库以及分表信息已经足够了，再配合分库分表配置（参见:https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml）
 在选择【商家ID】为 10682 的情况下，打印的分表前后的 sql 语句如下（在原始语句的基本上删除了影响阅读的空行）：
 ```
 --------------shard table sql start-------------- 
@@ -345,7 +345,7 @@ select
 ```
 
 ## 重新生成 mapper 和 entity
-请参考 [生成 Mapper 操作](https://github.com/uncleAndyChen/mybatis-plugin-shard/tree/master/docs)
+请参考 [生成 Mapper 操作](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/tree/master/docs)
 
 ## 有关 {xxx}Mapper.xml 文件
 我是直接把 MBG 生成的 {xxx}Mapper.xml 文件放到了 biz-service-dal 模块下与 {xxx}Mapper.java 平级的目录下了，包名为：`biz.mapper.xml.original` 和 `biz.mapper.xml.extend`
@@ -390,7 +390,7 @@ Invalid bound statement (not found): biz.service.dal.mapper.original.EduStudentM
 - [x] 完善文档
  
 ## 支持
-- 如果有疑问或建议，欢迎请提 [Issue](https://github.com/uncleAndyChen/mybatis-plugin-shard/issues)
+- 如果有疑问或建议，欢迎请提 [Issue](https://gitee.com/uncleAndyChen/mybatis-plugin-shard/issues)
 - 可能不会立即回复，尤其上班时间，不过我会尽量抽业余时间回复的
 
 ## 如果帮到了你

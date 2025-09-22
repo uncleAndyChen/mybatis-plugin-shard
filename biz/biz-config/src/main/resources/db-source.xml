@@ -168,7 +168,7 @@
         <!-- 分表策略
             直接将 ShardRequest.shardKeyTable（优先级高于后者） 或 ShardRequest.shardKeyTableNumber 作为分表后缀的表。
             需要配合 shardKeyTable 或 shardKeyTableNumber 使用，二选一，shardKeyTable 的优先级高于 shardKeyTableNumber，如 shardKeyTable=3，则下面的 edu_student 最终分表为 edu_student_3
-            ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+            ShardRequest 参见：https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
          -->
         <property name="shardTableDirectlyList">
             <list>
@@ -178,7 +178,7 @@
         </property>
         <!-- 分表策略
             通过两个数相除取余作为后缀的表，配合 ShardRequest.shardKeyTableNumber 使用
-            ShardRequest 参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
+            ShardRequest 参见：https://gitee.com/uncleAndyChen/mybatis-plugin-shard/blob/master/common/common-shard/src/main/java/common/shard/ShardRequest.java
         -->
         <!-- key 将作为 shardKeyTableNumber 的除数（取余）， 余数作为分表后缀-->
         <!-- shardKeyTableNumber 通过 ShardRequest 传递，在请求 api 时传递 -->
