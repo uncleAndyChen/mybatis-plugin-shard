@@ -12,8 +12,8 @@
 
 ## 配套 MBG 增强插件
 - 查看 MBG 增强插件请移步：
-    - [giee -> mybatis-generator](https://gitee.com/uncleAndyChen/mybatis-generator-enhance)
-    - [github -> mybatis-generator](https://github.com/uncleAndyChen/mybatis-generator-enhance)
+    - [giee -> mybatis-generator-enhance](https://gitee.com/uncleAndyChen/mybatis-generator-enhance)
+    - [github -> mybatis-generator-enhance](https://github.com/uncleAndyChen/mybatis-generator-enhance)
 - 用该 MBG 增强插件生成的 {xxx}Mapper.xml，会把表名用[\`]（不包括中括号）引起来，这样做的目的是分表时，动态给表名添加后缀后替换原始表名时不会“添乱”。
 - 注意 [\`] 并非单引号，是在ESC 键下面、Q 键左上角的数字键 1 的左边那个键对应的“单引号”。
 - 比如有两张表：biz_trade、biz_trade_order，现在需要动态将 biz_trade 替换成 biz_trade_9，如果表名前后没有[\`]，则 biz_trade_order 也会被替换，替换后为：biz_trade_9_order，这显然不是我们希望发生的。
@@ -24,7 +24,7 @@
     - 对于同一数据源或不同数据源下的相同表结构的表，通过简单配置，实现分表查询功能
     - 底层实现：
         - 基于 MyBatis 插件，拦截最终执行的 SQL 语句并且根据分表配置对 SQL 语句中的表名进行修改之后再执行
-        - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator](https://gitee.com/uncleAndyChen/mybatis-generator-enhance)）生成 Mapper 和 entity model
+        - 要求表名必须用 [\`]（不包括中括号）引起来。请使用增强插件（[mybatis-generator-enhance](https://gitee.com/uncleAndyChen/mybatis-generator-enhance)）生成 Mapper 和 entity model
     - 适用数据量增加迅速的业务场景
 
 ## 分库（多数据源管理）实现方式
