@@ -46,7 +46,7 @@ public class ShardTableInterceptor implements Interceptor {
     private void doShardTable(MetaObject metaStatementHandler) {
         String originalSql = (String) metaStatementHandler.getValue("delegate.boundSql.sql");
 
-        if (originalSql == null || originalSql.equals("") || DataSourceAspect.shardConfig.notNeedShardSqlList.contains(originalSql)) {
+        if (originalSql == null || originalSql.isEmpty() || DataSourceAspect.shardConfig.notNeedShardSqlList.contains(originalSql)) {
             return;
         }
 
@@ -56,7 +56,7 @@ public class ShardTableInterceptor implements Interceptor {
             return;
         }
 
-        if ((shardRequest.getShardKeyTable() == null || shardRequest.getShardKeyTable().length() == 0)
+        if ((shardRequest.getShardKeyTable() == null || shardRequest.getShardKeyTable().isEmpty())
                 && shardRequest.getShardKeyTableNumber() < 1) {
             return;
         }
