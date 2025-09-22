@@ -41,7 +41,8 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!--生成对应表及类名-->
+        <!-- 生成对应表及类名 -->
+        <!-- 如何批量自动生成所有表的属性配置？请参考：https://gitee.com/uncleAndyChen/mybatis-generator-enhance/tree/master/boot-create-table-property -->
         <table tableName="biz_trade" domainObjectName="BizTrade"><generatedKey identity="true" type="post" column="id" sqlStatement="Mysql"/><columnOverride column="status" javaType="java.lang.Integer" jdbcType="INTEGER" /></table>
     </context>
 </generatorConfiguration>

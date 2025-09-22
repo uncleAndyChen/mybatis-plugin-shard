@@ -198,7 +198,7 @@
                 </entry>
             </map>
         </property>
-        <!-- 打印分表的 sql 语句，默认为 false 即不打印。-->
+        <!-- 打印分表的 sql 语句，测试阶段或排查问题才需要设置为 true，否则请设置为 false 即不打印。-->
         <property name="printShardSqlInfo" value="true" />
         <!-- 不需要分表的 sql 语句列表，以下这句为 MyBatis 操作数据库新增记录时，查询新增的主键值的语句 -->
         <property name="notNeedShardSqlList">

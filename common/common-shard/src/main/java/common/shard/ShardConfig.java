@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 各项参数说明，请参见：https://github.com/uncleAndyChen/mybatis-plugin-shard/blob/master/biz/biz-config/src/main/resources/db-source.xml
+ * 各项参数说明，请参见：/biz/biz-config/src/main/resources/db-source.xml
  */
 public class ShardConfig {
     public List<String> schemaKeyList;
